@@ -127,7 +127,7 @@ if selected_df == "Open Charge Map":
     # Bij hoeveel percentage van de locaties heb je een membership nodig?
     fig.add_trace(go.Histogram(x=df_ocm['UsageType.IsMembershipRequired'], histnorm='percent', marker_color=['#00CC96', '#EF553B']), row=1, col=3)
     # Hoeveel locaties zijn er per stad? (geeft top 25)
-    fig.add_trace(go.Histogram(y=df_ocm['AddressInfo.Town'].value_counts().nlargest(25), marker_color='#636EFA'), row=3, col=1)
+    fig.add_trace(go.Histogram(y=df_ocm[df_ocm['AddressInfo.Town'].value_counts().sort_values(ascending=False).head(25)], marker_color='#636EFA'), row=3, col=1)
     fig.update_layout(height=800, width=800, title_text="Elektrische laadpalen in Nederland", showlegend=False)
     fig.update_annotations(font_size=12) # subplot titels
     st.plotly_chart(fig)
