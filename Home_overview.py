@@ -27,7 +27,7 @@ st.title(page_title + ' ' + page_icon)
 
 st.write('''
 ### Introductie
-In deze week's data-analyse dashboard onderzoeken we de wereld van elektrische laadpalen en voertuigregistraties in Nederland. 
+In deze week's data-analyse dashboard onderzoeken we de wereld van elektrische laadpalen in Nederland. 
 Op de eerste pagina zullen we data analyseren over het gebruik van de laadpalen, we vragen ons bijvoorbeeld af: hoelang wordt er gemiddeld geladen, wanneer is het het drukst bij de laadpalen?
 Op de tweede pagina zullen we de locaties van de laadpalen in Nederland weergeven, en kijken waar er over de jaren heen laadpalen bij zijn gebouwd. 
 Ten slotte duiken we op de derde pagina in de voertuigregistratie gegevens van de RDW om een beeld te krijgen van wat voor voertuigen gebruik maken van de laadpalen.
