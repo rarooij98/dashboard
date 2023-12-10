@@ -132,7 +132,9 @@ if selected_df == "Open Charge Map":
     
     fig.update_layout(height=1000, width=1000, title_text="Elektrische laadpalen in Nederland", showlegend=False)
     fig.update_annotations(font_size=12) # subplot titels
-    fig.show()
+    
+    # fig.show()
+    st.plotly_chart(fig)
     
     # #Scatter plot for 'DateCreated' vs
     # # Convert 'DateCreated' column to datetime
