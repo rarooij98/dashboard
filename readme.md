@@ -46,7 +46,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## 📈 Context dataset
+## 📈 Data
 * Open Charge Map (OCM) API: https://openchargemap.org/site/develop/api#/
 * RDW: https://opendata.rdw.nl/browse?category=Voertuigen&provenance=official
 * CSV 'Laadpaaldata' with data from some electric charging stations
