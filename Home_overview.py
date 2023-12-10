@@ -87,14 +87,12 @@ if selected_df == "RDW":
     st.write('''
                 ## Registraties per maand
                 ''')
-    st.write('- Registrations_Tenaamstelling is de registratie aankomst algemeen van de autos')
-    st.write('- Registrations_EersteTenaamstelling is de registratie aankomst algemeen van de autos in Nederland')
     # Create a grouped bar chart
     fig = px.bar(
         merged_counts,
         x='Month',
         y=['Registrations_Tenaamstelling', 'Registrations_EersteTenaamstelling'],
-        title='Number of Registrations per Month',
+        title='Aantal Voertuigregistraties per maand',
         
     )
 
