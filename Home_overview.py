@@ -45,7 +45,7 @@ st.write('''
 * 'Laadpaaldata.csv' met de laaddata van een aantal laadpalen
 ''')
 selected_df = st.selectbox("Selecteer hieronder een optie om de gebruikte data in te zien:", [
-                           "Laadpaaldata", "RDW", "Open Charge Map"])
+                           "Open Charge Map", "Laadpaaldata", "RDW"])
 
 # Display the selected DataFrame
 if selected_df == "Laadpaaldata":
@@ -96,7 +96,7 @@ if selected_df == "RDW":
         merged_counts,
         x='Month',
         y=['Registrations_Tenaamstelling', 'Registrations_EersteTenaamstelling'],
-        title='Aantal Voertuigregistraties per maand',
+        title='Aantal voertuigregistraties per maand',
         
     )
 
@@ -120,39 +120,29 @@ if selected_df == "Open Charge Map":
         ],
         subplot_titles=("% Operationele laadpalen", "% Laadpalen met fast charging", " % Laadpalen met membership", "Aantal laadpalen per stad")
     )
-    
     # Hoeveel procent van de locaties zijn operationeel?
     fig.add_trace(go.Histogram(x=df_ocm['StatusType.IsOperational'], histnorm='percent', marker_color=['#00CC96', '#EF553B']), row=1, col=1)
     # Hoeveel procent van de locaties heeft fast charging?
     fig.add_trace(go.Histogram(x=df_ocm['Connection.Level.IsFastChargeCapable'], histnorm='percent', marker_color=['#EF553B', '#00CC96']), row=1, col=2)
     # Bij hoeveel percentage van de locaties heb je een membership nodig?
     fig.add_trace(go.Histogram(x=df_ocm['UsageType.IsMembershipRequired'], histnorm='percent', marker_color=['#00CC96', '#EF553B']), row=1, col=3)
-    # Hoeveel locaties zijn er per stad?
-    fig.add_trace(go.Histogram(y=df_ocm['AddressInfo.Town'], marker_color='#636EFA'), row=3, col=1)
-    
+    # Hoeveel locaties zijn er per stad? (geeft top 25)
+    fig.add_trace(go.Histogram(y=df_ocm['AddressInfo.Town'].value_counts().nlargest(25).index, marker_color='#636EFA'), row=3, col=1)
     fig.update_layout(height=800, width=800, title_text="Elektrische laadpalen in Nederland", showlegend=False)
     fig.update_annotations(font_size=12) # subplot titels
-    
-    # fig.show()
     st.plotly_chart(fig)
-    
-    # # Scatter plot for 'DateCreated' vs
-    # Convert 'DateCreated' column to datetime
-    # df_ocm['DateCreated'] = pd.to_datetime(df_ocm['DateCreated'])
-
-    # # Bar chart for 'NumberOfPoints' vs 'OperatorInfo.Title'
-    # st.subheader("Laadpunten per operator")
-    # fig1 = px.bar(df_ocm, x="NumberOfPoints", y="OperatorInfo.Title")
-    # st.plotly_chart(fig1)
-    
-    # # Group the data by date and count the number of rows created on each date
-    # daily_counts = df_ocm.groupby(df_ocm['DateCreated'].dt.date)['DateCreated'].count()
-    # # Create a line chart
-    # st.subheader("Laadpaal registraties 2010-2023")
-    # fig2 = px.line(x=daily_counts.index, y=daily_counts.values, labels={"x": "Date", "y": "Number of Rows Created"})
-    # st.plotly_chart(fig2)
 
     # Histogram for 'Connection.PowerKW'
     st.subheader("⚡ Verdeling PowerKW")
-    fig3 = px.histogram(df_ocm, x="Connection.PowerKW")
+    fig2 = px.histogram(df_ocm, x="Connection.PowerKW")
+    st.plotly_chart(fig2)
+    
+    # Linechart for registration over time
+    st.subheader("📅 Laadpaal registraties 2010-2023")
+    # Convert 'DateCreated' column to datetime
+    df_ocm['DateCreated'] = pd.to_datetime(df_ocm['DateCreated'])
+    # Group the data by date and count the number of rows created on each date
+    daily_counts = df_ocm.groupby(df_ocm['DateCreated'].dt.date)['DateCreated'].count()
+    # Create a line chart
+    fig3 = px.line(x=daily_counts.index, y=daily_counts.values, labels={"x": "Date", "y": "Number of Rows Created"})
     st.plotly_chart(fig3)
