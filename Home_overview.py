@@ -130,7 +130,7 @@ if selected_df == "Open Charge Map":
     # fig.add_trace(go.Histogram(y=df_ocm['AddressInfo.Town'].value_counts().sort_values(ascending=True).head(25).index, marker_color='#636EFA'), row=3, col=1)
     fig.add_trace(go.Bar(x=df_ocm['AddressInfo.Town'].value_counts().sort_values(ascending=False).head(25).index,
                      y=df_ocm['AddressInfo.Town'].value_counts().sort_values(ascending=False).head(25),
-                     marker_color='#636EFA'))
+                     marker_color='#636EFA'), row=3, col=1)
     
     fig.update_layout(height=800, width=800, title_text="Elektrische laadpalen in Nederland", showlegend=False)
     fig.update_annotations(font_size=12) # subplot titels
