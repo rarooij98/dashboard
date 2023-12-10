@@ -1,24 +1,34 @@
-# Laadpaaldata
-This app shows the data of the charging poles in the Netherlands.
+# 🔌 Laadpaal data
+This app shows the data about the electric charging stations in the Netherlands.
 
-## Prerequisites
-
-List any prerequisites or dependencies that users need to have installed before they can use your project. Include versions if necessary.
+## 📦 Packages
 
 - Python 3.11
-- Other dependencies...
+- Streamlit 1.27.0
+- Pandas 2.1.1
+- Numpy 1.26.0
+- Matplotlib 3.8.0
+- Seaborn 0.12.2
+- Plotly 5.17.0
+- Geopandas 0.14
+- Folium 0.14.0
+- Streamlit_folium 0.15.0
+- Statsmodels 0.14.0
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Installation
 
-1. Clone the repository to your local machine:
-2. Navigate to the project directory:
+1. Clone the repository to your local machine: 
+```bash
+git clone https://github.com/rarooij98/dashboard.git
+```
+2. Navigate to the project directory.
 3. Create a virtual environment (recommended):
 ```bash
 python -m venv venv
 ```
-4. Activate the virtual environment:
+4. Activate the virtual environment (recommended):
 - On Windows:
 ```bash
 venv\Scripts\activate
@@ -27,11 +37,11 @@ venv\Scripts\activate
 ```bash
 source venv/bin/activate
 ```
-5. Install project dependencies from requirements.txt:
+5. Install all project dependencies from requirements.txt:
 ```bash
 pip install -r requirements.txt
 ```
-6. Explain how to use your project once it's set up. Provide examples and usage instructions.
+6. Start the app by running this script:
 ```bash
 streamlit run app.py
 ```
@@ -78,9 +88,5 @@ Here is a breakdown of the columns in the dataset:
 - **ChargeTime** specifies the time the device spent charging, which can be important for understanding how much time the device spent replenishing its power.
 
 - **MaxPower** reveals the maximum power consumption observed during the event, which can be valuable for assessing peak power demands.
-
-These columns collectively provide valuable information for analyzing energy consumption and device usage patterns over time.
-
-Please note that the units for energy, time, and power may need to be confirmed based on the dataset's specific context.
 
 
