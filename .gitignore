@@ -1,0 +1,57 @@
+# Python-specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+
+# Virtual environments
+venv/
+env/
+*.venv/
+env.bak/
+env2/
+env3/
+.pipenv
+.Python
+*.egg-info
+dist/
+build/
+lib/
+bin/
+include/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Logs and backups
+*.log
+*.swp
+*~
+*.bak
+*.backup
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Dependency management files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Miscellaneous
+*.bak
+.DS_Store
+Thumbs.db
