@@ -7,7 +7,7 @@ import time
 
 # ---------------- SETTINGS -------------------
 page_title = 'Elektrisch Laadpalen'
-page_icon = ':high_voltage:' # https://www.webfx.com/tools/emoji-cheat-sheet/
+page_icon = '⚡' # https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
 st.set_page_config(
@@ -40,11 +40,11 @@ st.write('''
 * RDW: https://opendata.rdw.nl/browse?category=Voertuigen&provenance=official
 * 'Laadpaaldata.csv' met de laaddata van een aantal laadpalen
 ''')
-selected_df = st.selectbox("Selecteer hieronder een optie om de gebruikte data in te zien.", [
-                           "Laadpalen Tijden", "RDW", "Laadpalen Nederland"])
+selected_df = st.selectbox("Selecteer hieronder een optie om de gebruikte data in te zien:", [
+                           "Laadpaaldata", "RDW", "Open Charge Map"])
 
 # Display the selected DataFrame
-if selected_df == "Laadpalen Tijden":
+if selected_df == "Laadpaaldata":
     st.write(df_lp.head())
     st.subheader("Interactive Scatter Plot")
     fig = px.scatter(df_lp, x="Started", y="TotalEnergy",
@@ -100,7 +100,7 @@ if selected_df == "RDW":
 
     st.plotly_chart(fig)
 
-if selected_df == "Laadpalen Nederland":
+if selected_df == "Open Charge Map":
     st.write(df_ocm.head())
     # Plot 1: Scatter plot for 'DateCreated' vs
     # Convert 'DateCreated' column to datetime
