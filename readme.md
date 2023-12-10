@@ -46,12 +46,14 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Context
+## 📈 Context dataset
+* Open Charge Map (OCM) API: https://openchargemap.org/site/develop/api#/
+* RDW: https://opendata.rdw.nl/browse?category=Voertuigen&provenance=official
+* CSV 'Laadpaaldata' with data from some electric charging stations
 
+### Dataset Column Information
 
-# Dataset Column Information
-
-Here is a breakdown of the columns in the dataset:
+Here is a breakdown of the columns in the 'Laadpaaldata' dataset:
 
 1. **Started:** 
    - Description: The date and time when the event started.
@@ -77,7 +79,7 @@ Here is a breakdown of the columns in the dataset:
    - Description: The maximum power consumption during the event (in watts).
    - Example: 3524
 
-## Column Explanations
+### Column Explanations
 
 - **Started** and **Ended** columns provide the timestamp for when each event started and ended, allowing you to track the duration of each event.
 
