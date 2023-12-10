@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import time
 
+import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
 # ---------------- SETTINGS -------------------
 page_title = 'Elektrisch Laadpalen'
 page_icon = '⚡' # https://www.webfx.com/tools/emoji-cheat-sheet/
@@ -99,25 +103,53 @@ if selected_df == "RDW":
     st.plotly_chart(fig)
 
 if selected_df == "Open Charge Map":
-    st.write(df_ocm.head())
-    # Plot 1: Scatter plot for 'DateCreated' vs
-    # Convert 'DateCreated' column to datetime
-    df_ocm['DateCreated'] = pd.to_datetime(df_ocm['DateCreated'])
+    st.write(df_ocm[['ID','OperatorID','UsageTypeID','UsageCost','Connections','NumberOfPoints','DateCreated','OperatorInfo.Title',
+    'UsageType.IsPayAtLocation','UsageType.IsMemberShipRequired','UsageType.IsAccessKeyRequired','UsageType.ID',
+    'UsageType.Title','StatusType.IsOperational','AdressInfo.AddressLine1','AdressInfo.Town','AdressInfo.StateOrProvince']].head())
+    
+    fig = make_subplots(
+        rows=5, cols=3,
+        horizontal_spacing=0.05, vertical_spacing=0.075,  
+        specs=[ 
+            [{"rowspan": 2}, {"rowspan": 2}, {"rowspan": 2}],
+            [None, None, None],
+            [{"colspan": 3, "rowspan": 3}, None, None],
+            [None, None, None],
+            [None, None, None]
+        ],
+        subplot_titles=("% Operationele laadpalen", "% Laadpalen met fast charging", " % Laadpalen met membership", "Aantal laadpalen per stad")
+    )
+    
+    # Hoeveel procent van de locaties zijn operationeel?
+    fig.add_trace(go.Histogram(x=df_ocm['StatusType.IsOperational'], histnorm='percent', marker_color=['#00CC96', '#EF553B']), row=1, col=1)
+    # Hoeveel procent van de locaties heeft fast charging?
+    fig.add_trace(go.Histogram(x=df_ocm['Connection.Level.IsFastChargeCapable'], histnorm='percent', marker_color=['#EF553B', '#00CC96']), row=1, col=2)
+    # Bij hoeveel percentage van de locaties heb je een membership nodig?
+    fig.add_trace(go.Histogram(x=df_ocm['UsageType.IsMembershipRequired'], histnorm='percent', marker_color=['#00CC96', '#EF553B']), row=1, col=3)
+    # Hoeveel locaties zijn er per stad?
+    fig.add_trace(go.Histogram(y=df_ocm['AddressInfo.Town'], marker_color='#636EFA'), row=3, col=1)
+    
+    fig.update_layout(height=1000, width=1000, title_text="Elektrische laadpalen in Nederland", showlegend=False)
+    fig.update_annotations(font_size=12) # subplot titels
+    fig.show()
+    
+    # #Scatter plot for 'DateCreated' vs
+    # # Convert 'DateCreated' column to datetime
+    # df_ocm['DateCreated'] = pd.to_datetime(df_ocm['DateCreated'])
 
-    # Group the data by date and count the number of rows created on each date
-    daily_counts = df_ocm.groupby(df_ocm['DateCreated'].dt.date)['DateCreated'].count()
+    # # Group the data by date and count the number of rows created on each date
+    # daily_counts = df_ocm.groupby(df_ocm['DateCreated'].dt.date)['DateCreated'].count()
+    # # Bar chart for 'NumberOfPoints' vs 'OperatorInfo.Title'
+    # st.subheader("Laadpunten per operator")
+    # fig2 = px.bar(df_ocm, x="NumberOfPoints", y="OperatorInfo.Title")
+    # st.plotly_chart(fig2)
+    
+    # # Create a line chart
+    # st.subheader("Laadpaal registraties 2010-2023")
+    # fig = px.line(x=daily_counts.index, y=daily_counts.values, labels={"x": "Date", "y": "Number of Rows Created"})
+    # st.plotly_chart(fig)
 
-    # Create a line chart
-    st.subheader("Line Chart: Number of Rows Created Over Time for df_ocm")
-    fig = px.line(x=daily_counts.index, y=daily_counts.values, labels={"x": "Date", "y": "Number of Rows Created"})
-    st.plotly_chart(fig)
-
-    # Plot 2: Bar chart for 'NumberOfPoints' vs 'OperatorInfo.Title'
-    st.subheader("Bar Chart: NumberOfPoints vs OperatorInfo.Title")
-    fig2 = px.bar(df_ocm, x="NumberOfPoints", y="OperatorInfo.Title")
-    st.plotly_chart(fig2)
-
-    # Plot 3: Histogram for 'Connection.PowerKW'
-    st.subheader("Histogram: Connection.PowerKW")
-    fig3 = px.histogram(df_ocm, x="Connection.PowerKW")
-    st.plotly_chart(fig3)
+    # # Histogram for 'Connection.PowerKW'
+    # st.subheader("Verdeling PowerKW")
+    # fig3 = px.histogram(df_ocm, x="Connection.PowerKW")
+    # st.plotly_chart(fig3)
