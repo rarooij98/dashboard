@@ -53,7 +53,7 @@ if selected_df == "Laadpaaldata":
 
 if selected_df == "RDW":
     st.write(df_rdw.head())
-    progress_text = "Operatie bezig. Even geduld aub."
+    progress_text = "🏃 Loading..."
     my_bar = st.progress(0, text=progress_text)
     # Assuming you have date columns for both dates
     df_rdw['Datum tenaamstelling DT'] = pd.to_datetime(
