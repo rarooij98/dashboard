@@ -39,7 +39,7 @@ Ten slotte duiken we op de derde pagina in de voertuigregistratie gegevens van d
 
 # Create a dropdown to select which DataFrame to display
 st.write('''
-### Data
+### 📈 Data
 * Open Charge Map (OCM) API: https://openchargemap.org/site/develop/api#/
 * RDW: https://opendata.rdw.nl/browse?category=Voertuigen&provenance=official
 * 'Laadpaaldata.csv' met de laaddata van een aantal laadpalen
@@ -89,7 +89,7 @@ if selected_df == "RDW":
     my_bar.empty()
 
     st.write('''
-                ## Registraties per maand
+                ## 🚘 Registraties per maand
                 ''')
     # Create a grouped bar chart
     fig = px.bar(
@@ -103,11 +103,11 @@ if selected_df == "RDW":
     st.plotly_chart(fig)
 
 if selected_df == "Open Charge Map":
-    # st.write(df_ocm.columns)
     st.write(df_ocm[['ID','OperatorID','UsageTypeID','UsageCost','Connections','NumberOfPoints','DateCreated','OperatorInfo.Title',
     'UsageType.IsPayAtLocation','UsageType.IsMembershipRequired','UsageType.IsAccessKeyRequired','UsageType.ID',
     'UsageType.Title','StatusType.IsOperational','AddressInfo.AddressLine1','AddressInfo.Town','AddressInfo.StateOrProvince']].head())
     
+    st.subheader("🔎 Data Exploratie")
     fig = make_subplots(
         rows=5, cols=3,
         horizontal_spacing=0.05, vertical_spacing=0.075,  
@@ -153,6 +153,6 @@ if selected_df == "Open Charge Map":
     # st.plotly_chart(fig2)
 
     # Histogram for 'Connection.PowerKW'
-    st.subheader("Verdeling PowerKW")
+    st.subheader("⚡ Verdeling PowerKW")
     fig3 = px.histogram(df_ocm, x="Connection.PowerKW")
     st.plotly_chart(fig3)
