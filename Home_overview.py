@@ -6,9 +6,8 @@ import plotly.express as px
 import time
 
 # ---------------- SETTINGS -------------------
-page_title = 'Laadpalen Project'
-# https://www.webfx.com/tools/emoji-cheat-sheet/
-page_icon = ':oncoming_automobile:'
+page_title = 'Elektrisch Laadpalen'
+page_icon = ':high_voltage:' # https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
 st.set_page_config(
@@ -22,16 +21,26 @@ st.set_page_config(
 from data.OpenChargeMapAPI import realTimeLaadPalenData as df_ocm
 from data.OpenDataRDW import rdw_data as df_rdw
 from data.laadpaaldata import laadpaal_data as df_lp
+
 # ----------------- PAGES ---------------------
 st.title(page_title + ' ' + page_icon)
 
 st.write('''
-         # Introductie
-In deze week's data-analyse dashboard, nemen we u graag mee op een informatieve reis door de wereld van elektrische laadpalen en voertuigregistraties in Nederland. Onze analyse is gebaseerd op drie verschillende datasets, elk met unieke inzichten en visualisaties. Op de eerste pagina richten we ons op een diepgaande analyse van de dataset met betrekking tot laadpalen, terwijl de tweede pagina een grondige verkenning biedt van de verdeling van laadpalen in Nederland, gebruikmakend van de open charge data. Op de derde pagina duiken we in de gegevens van de RDW om waardevolle inzichten te verkrijgen over voertuigregistraties en andere relevante informatie. 
+### Introductie
+In deze week's data-analyse dashboard onderzoeken we de wereld van elektrische laadpalen en voertuigregistraties in Nederland. 
+Op de eerste pagina zullen we data analyseren over het gebruik van de laadpalen, we vragen ons bijvoorbeeld af: hoelang wordt er gemiddeld geladen, wanneer is het het drukst bij de laadpalen?
+Op de tweede pagina zullen we de locaties van de laadpalen in Nederland weergeven, en kijken waar er over de jaren heen laadpalen bij zijn gebouwd. 
+Ten slotte duiken we op de derde pagina in de voertuigregistratie gegevens van de RDW om een beeld te krijgen van wat voor voertuigen gebruik maken van de laadpalen.
 ''')
 
 # Create a dropdown to select which DataFrame to display
-selected_df = st.selectbox("Select a DataFrame", [
+st.write('''
+### Data
+* Open Charge Map (OCM) API: https://openchargemap.org/site/develop/api#/
+* RDW: https://opendata.rdw.nl/browse?category=Voertuigen&provenance=official
+* 'Laadpaaldata.csv' met de laaddata van een aantal laadpalen
+''')
+selected_df = st.selectbox("Selecteer hieronder een optie om de gebruikte data in te zien.", [
                            "Laadpalen Tijden", "RDW", "Laadpalen Nederland"])
 
 # Display the selected DataFrame
@@ -46,7 +55,6 @@ if selected_df == "RDW":
     st.write(df_rdw.head())
     progress_text = "Operatie bezig. Even geduld aub."
     my_bar = st.progress(0, text=progress_text)
-    # Assuming you have date columns for both dates
     # Assuming you have date columns for both dates
     df_rdw['Datum tenaamstelling DT'] = pd.to_datetime(
         df_rdw['Datum tenaamstelling DT'])
