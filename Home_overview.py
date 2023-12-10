@@ -106,7 +106,7 @@ if selected_df == "Open Charge Map":
     # st.write(df_ocm.columns)
     st.write(df_ocm[['ID','OperatorID','UsageTypeID','UsageCost','Connections','NumberOfPoints','DateCreated','OperatorInfo.Title',
     'UsageType.IsPayAtLocation','UsageType.IsMemberShipRequired','UsageType.IsAccessKeyRequired','UsageType.ID',
-    'UsageType.Title','StatusType.IsOperational','AdressInfo.AddressLine1','AdressInfo.Town','AdressInfo.StateOrProvince']].head())
+    'UsageType.Title','StatusType.IsOperational','AdressInfo.AddressLine1','AddressInfo.Town','AddressInfo.StateOrProvince']].head())
     
     fig = make_subplots(
         rows=5, cols=3,
