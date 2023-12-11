@@ -65,6 +65,7 @@ mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
                         
 st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
+st.write(filtered_df.dtypes)
 
 # Create the stacked bar chart
 fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
