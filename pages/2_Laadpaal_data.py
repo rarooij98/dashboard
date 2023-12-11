@@ -71,7 +71,7 @@ fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
               title='Connected Time vs Charge Time per Charging Session (Filtered)',
               labels={'value': 'Time (minutes)', 'variable': 'Type'},
               barmode='stack')
-print(fig1.data)
+st.write(fig1.data)
 
 # Create a grouped bar chart for mean values
 fig2 = px.bar(mean_df, x='Type', y='Mean Time',
