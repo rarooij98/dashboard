@@ -71,11 +71,11 @@ fig.update_layout(title_text='Mean Connected Time vs Mean Charge Time')
 st.plotly_chart(fig)
 
 st.write('''
-### Oplaadtijd
+### Verdeling oplaadtijd
 De gemiddelde oplaadtijd is 105 minuten, de mediaan ligt iets hoger met 134 minuten.
 ''')
 # Set a custom style (optional)
-sns.set(style="whitegrid")
+sns.set(style="darkgrid")
 
 # Create a smaller figure with a specified size
 fig_3, ax = plt.subplots(figsize=(8, 6))
