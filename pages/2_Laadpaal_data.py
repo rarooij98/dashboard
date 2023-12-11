@@ -75,15 +75,13 @@ st.write('''
 De gemiddelde oplaadtijd is 105 minuten, de mediaan ligt iets hoger met 134 minuten.
 ''')
 # Set a custom style (optional)
-sns.set(style="dark")
+sns.set(style="whitegrid")
 
 # Create a smaller figure with a specified size
 fig_3, ax = plt.subplots(figsize=(8, 6))
 
 # Plot the histogram using seaborn for improved aesthetics
 sns.histplot(df_lp['ChargeTime_min'], bins=range(0, 520, 20), edgecolor='black', ax=ax, kde=False)
-
-ax.set_facecolor('black')
 
 # Add labels and title
 ax.set_xlabel('Charge Time (minutes)')
@@ -95,8 +93,10 @@ mean = df_lp['ChargeTime_min'].mean()
 median = df_lp['ChargeTime_min'].median()
 ax.axvline(mean, color='red', linestyle='dashed', linewidth=1)
 ax.axvline(median, color='green', linestyle='dashed', linewidth=1)
-ax.annotate(f"Mean: {mean:.0f}", xy=(mean, 1400), xytext=(mean-120, 1300), arrowprops=dict(facecolor='red', arrowstyle='->'))
-ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300), arrowprops=dict(facecolor='green', arrowstyle='->'))
+ax.annotate(f"Mean: {mean:.0f}", xy=(mean, 1400), xytext=(mean-120, 1300),
+            arrowprops=dict(color='red', arrowstyle='->'))
+ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300),
+            arrowprops=dict(color='green', arrowstyle='->'))
 
 # Adjust the layout to prevent clipping of labels
 plt.tight_layout()
