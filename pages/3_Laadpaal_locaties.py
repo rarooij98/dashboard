@@ -175,4 +175,4 @@ def create_choropleth(Laadpalen):
     
     st.map = st_folium(m, width=700, height=600)
 
-create_choropleth(df_laadpaal)
+create_choropleth(cumcount_selection)
