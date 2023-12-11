@@ -7,7 +7,7 @@ from streamlit_folium import st_folium
 
 # ---------------- SETTINGS -------------------
 page_title = 'Laadpalen in Nederland'
-page_icon = '🗺' #https://www.webfx.com/tools/emoji-cheat-sheet/
+page_icon = '🌎' #https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
 st.set_page_config(
