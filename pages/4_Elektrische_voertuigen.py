@@ -155,9 +155,9 @@ results_df = pd.DataFrame({
 })
 
 # Display the DataFrame
-print(results_df.head())
+st.write(results_df.head())
 brand_means = results_df.groupby('Merk').mean()
-print(brand_means.head())
+st.write(brand_means.head())
 
 # Create a bar plot
 plt.figure(figsize=(12, 6))
