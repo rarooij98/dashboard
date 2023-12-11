@@ -122,6 +122,8 @@ st.write("### Catalogusprijs voorspelling")
 # # Sort the DataFrame by the predicted values
 # brand_means = brand_means.sort_values(by='Predicted')
 
+st.write(df_rdw.columns.head())
+
 # Assuming 'Automerk' is a column in the original DataFrame 'df_rdw'
 X = df_rdw[['Aantal zitplaatsen', 'Lengte', 'Breedte', 'Vermogen massarijklaar']]
 y = df_rdw['Catalogusprijs']
