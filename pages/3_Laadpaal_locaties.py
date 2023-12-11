@@ -83,13 +83,13 @@ def get_selected_data():
 
 selected_data = get_selected_data()
 
-selected_info = 'count'
+data_column = 'count'
 if selected_data == 'Aantal laadpalen':
-    selected_info = 'count'
-if selected_data == 'Cumulatief aantal laadpalen':
-    selected_info = 'cum_count'
-if selected_data == 'Laadpalen per km2':
-    selected_info = 'per_km2'
+    data_column = 'count'
+elif selected_data == 'Cumulatief aantal laadpalen':
+    data_column = 'cum_count'
+elif selected_data == 'Laadpalen per km2':
+    data_column = 'per_km2'
 
 st.write('''
 Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel er in dat jaar geregistreerd waren.
@@ -122,7 +122,7 @@ zoom = 7
 def create_choropleth(Laadpalen):
     m = folium.Map(location=location, zoom_start=zoom, tiles='CartoDB positron')
     
-    # Voeg het Marker Cluster toe, maar alleen als je inzoomt op een provincie
+    # Voeg de markers toe
     prov_markers = None
     if len(selected_prov) < 12:
         prov_markers = MarkerCluster().add_to(m)
@@ -134,30 +134,39 @@ def create_choropleth(Laadpalen):
             return {'color':'green', 'icon':'bolt', 'prefix':'fa'}
         elif status == False :
             return {'color':'red', 'icon':'bolt', 'prefix':'fa'}
-        # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
+        
+    # For elke locatie, maak een marker en voeg deze toe aan het cluster
     if prov_markers:
         for index, row in Laadpalen_markers.iterrows():
             if row['StatusType.IsOperational']:
                 status = row['StatusType.IsOperational']
-            else: 
+            else:
                 status = False
+    
+            # Update the data column used for markers based on the selected data type
+            if data_column == 'count':
+                marker_data = row['count']
+            elif data_column == 'cum_count':
+                marker_data = row['cum_count']
+            elif data_column == 'per_km2':
+                marker_data = row['per_km2']
+    
             folium.Marker(
-                [row['AddressInfo.Latitude'], 
-                row['AddressInfo.Longitude']],
-                popup=row['Connection.Level.Title'],
+                [row['AddressInfo.Latitude'], row['AddressInfo.Longitude']],
+                popup=f"{row['Connection.Level.Title']} - {marker_data}",
                 icon=folium.map.Icon(
                     color=marker_colors(status)['color'],
                     icon_color='white',
                     icon=marker_colors(status)['icon'],
                     prefix=marker_colors(status)['prefix'],
-                )
+                ),
             ).add_to(prov_markers)
         
     folium.Choropleth(
         geo_data=prov_selection,
         name='geometry',
         data=cumcount_selection,
-        columns=['Provincie', selected_info],
+        columns=['Provincie', data_column],
         key_on='feature.properties.PROVINCIENAAM',
         fill_color='PuBu',
         fill_opacity=0.5,
