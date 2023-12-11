@@ -54,6 +54,7 @@ st.plotly_chart(fig)
 # Histogram van meest voorkomende kleuren
 st.write("### Meest voorkomende auto kleuren")
 st.write(f"Deze histogram laat de meest voorkomende kleuren zien van elektrische auto's van het automerk '{car_brand}'.")
+average_selected_prices = df_rdw_filtered.sort_values(by='Eerste kleur', ascending=False)
 fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'})
 fig.update_layout(xaxis_title="Eerste kleur", yaxis_title="Aantal")
 st.plotly_chart(fig)
@@ -73,14 +74,13 @@ average_selected_prices = filtered_data.groupby('Merk')['Catalogusprijs'].mean()
 average_total_price = df_rdw['Catalogusprijs'].mean()
 gemiddelde_row = pd.DataFrame({'Merk': ['Gemiddelde'], 'Catalogusprijs': [average_total_price]})
 average_selected_prices = pd.concat([average_selected_prices, gemiddelde_row])
-# Sort the data so that 'Gemiddelde' is at the bottom
+# Sort the data
 average_selected_prices = average_selected_prices.sort_values(by='Catalogusprijs', ascending=False)
 
 # Create a bar plot for the selected top car brands and the average total
 # Gemiddelde Catalogusprijs voor meest voorkomende automerken
 fig = px.bar(average_selected_prices, x='Merk', y='Catalogusprijs', 
-             labels={'x': 'Automerk', 'y': 'Gemiddelde Catalogusprijs'},
-             color_discrete_sequence=['blue', 'red'])  # 'Gemiddelde' bar color is set to red
+             labels={'x': 'Automerk', 'y': 'Gemiddelde Catalogusprijs'});
 fig.update_layout(xaxis_title="Automerk", yaxis_title="Gemiddelde Catalogusprijs")
 st.plotly_chart(fig)
 
@@ -113,6 +113,7 @@ results_df = pd.DataFrame({
 })
 brand_means = results_df.groupby('Merk').mean()
 
+st.write("Met een lineare regressie model hebben we geprobeerd om de catalogusprijs te voorspellen.")
 # Create a Plotly bar plot
 fig = px.bar(
     brand_means,
@@ -129,8 +130,8 @@ fig.update_xaxes(tickangle=45, tickmode='array')
 st.plotly_chart(fig)
 
 # Scatter plot van werkelijke vs. voorspelde Catalogusprijs
-st.write("Voorspelde Catalogusprijs met Residuen")
-st.write("Met een lineare regressie model hebben we geprobeerd om de catalogusprijs te voorspellen. Deze scatterplot laat de vergelijking zien tussen de werkelijke en voorspelde catalogusprijs.")
+st.write("### Voorspelde Catalogusprijs met Residuen")
+st.write("Deze scatterplot laat de vergelijking zien tussen de werkelijke en de voorspelde catalogusprijs.")
 # Create a scatter plot of actual vs. predicted values with a color scale based on residuals
 fig = px.scatter(results_df, x='Werkelijke Catalogusprijs', y='Voorspelde Catalogusprijs', color='Residuen',
                  labels={'x': 'Werkelijke Catalogusprijs', 'y': 'Voorspelde Catalogusprijs'},
