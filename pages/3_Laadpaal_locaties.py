@@ -123,6 +123,7 @@ def create_choropleth(Laadpalen):
     m = folium.Map(location=location, zoom_start=zoom, tiles='CartoDB positron')
     
     # Voeg de markers toe
+    prov_markers = None;
     if len(selected_prov) < 12:
         prov_markers = MarkerCluster().add_to(m)
     
