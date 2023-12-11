@@ -117,10 +117,6 @@ zoom = 7
     # st.write(centroid)
     # st.write(location)
     # zoom = 9
-    
-# Join the Laadpalen dataframe and the dataframe with the cumulative count
-merged_df = pd.merge(df_laadpaal, cumcount_selection, on='Year', how='outer')
-st.write(merged_df)
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
@@ -130,41 +126,54 @@ def create_choropleth(Laadpalen):
     prov_markers = None
     if len(selected_prov) < 12:
         prov_markers = MarkerCluster().add_to(m)
-    
-    # Definieer de markers voor het Marker Cluser
-    Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
-    def marker_colors(status):
-        if status == True :
-            return {'color':'green', 'icon':'bolt', 'prefix':'fa'}
-        elif status == False :
-            return {'color':'red', 'icon':'bolt', 'prefix':'fa'}
         
-    # For elke locatie, maak een marker en voeg deze toe aan het cluster
-    if prov_markers:
-        for index, row in Laadpalen_markers.iterrows():
-            if row['StatusType.IsOperational']:
-                status = row['StatusType.IsOperational']
-            else:
-                status = False
+    # Iterate over each row in df_count
+    for index, row in cumcount_selection.iterrows():
+        # Get lon and lat values from df_locations
+        lon = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'Longitude'].values[0]
+        lat = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'Latitude'].values[0]
     
-            # Update the data column used for markers based on the selected data type
-            if data_column == 'count':
-                marker_data = row['count']
-            elif data_column == 'cum_count':
-                marker_data = row['cum_count']
-            elif data_column == 'per_km2':
-                marker_data = row['per_km2']
+        # Marker data based on selected data column
+        if data_column == 'count':
+            marker_data = row['count']
+        elif data_column == 'cum_count':
+            marker_data = row['cum_count']
+        elif data_column == 'per_km2':
+            marker_data = row['per_km2']
     
-            folium.Marker(
-                [row['AddressInfo.Latitude'], row['AddressInfo.Longitude']],
-                popup=f"{row['Connection.Level.Title']} - {marker_data}",
-                icon=folium.map.Icon(
-                    color=marker_colors(status)['color'],
-                    icon_color='white',
-                    icon=marker_colors(status)['icon'],
-                    prefix=marker_colors(status)['prefix'],
-                ),
-            ).add_to(prov_markers)
+        # Create a marker and add it to the Marker Cluster
+        folium.Marker(
+            [lat, lon],
+            popup=f"{row['Provincie']}: {marker_data}",
+            icon=folium.Icon(color='blue', icon='info-sign')
+        ).add_to(prov_markers)
+    
+    # # Definieer de markers voor het Marker Cluser
+    # Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
+    
+    # def marker_colors(status):
+    #     if status == True :
+    #         return {'color':'green', 'icon':'bolt', 'prefix':'fa'}
+    #     elif status == False :
+    #         return {'color':'red', 'icon':'bolt', 'prefix':'fa'}
+    #     # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
+    # if prov_markers:
+    #     for index, row in Laadpalen_markers.iterrows():
+    #         if row['StatusType.IsOperational']:
+    #             status = row['StatusType.IsOperational']
+    #         else: 
+    #             status = False
+    #         folium.Marker(
+    #             [row['AddressInfo.Latitude'], 
+    #             row['AddressInfo.Longitude']],
+    #             popup=row['Connection.Level.Title'],
+    #             icon=folium.map.Icon(
+    #                 color=marker_colors(status)['color'],
+    #                 icon_color='white',
+    #                 icon=marker_colors(status)['icon'],
+    #                 prefix=marker_colors(status)['prefix'],
+    #             )
+    #         ).add_to(prov_markers)
         
     folium.Choropleth(
         geo_data=prov_selection,
