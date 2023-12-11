@@ -134,6 +134,11 @@ def create_choropleth(Laadpalen):
         (Laadpalen['Provincie'].isin(selected_prov))
     ]
     
+    Laadpalen_markers['Unique_Location'] = Laadpalen_markers[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
+    unique_locations = Laadpalen_markers['Unique_Location'].nunique()
+    st.write(f"Number of unique locations: {unique_locations}")
+
+    
     def marker_colors(status):
         if status == True:
             return {'color': 'green', 'icon': 'bolt', 'prefix': 'fa'}
