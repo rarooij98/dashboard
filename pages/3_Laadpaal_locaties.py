@@ -130,8 +130,8 @@ def create_choropleth(Laadpalen):
     # Iterate over each row in df_count
     for index, row in cumcount_selection.iterrows():
         # Get lon and lat values from df_locations
-        lon = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'Longitude'].values[0]
-        lat = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'Latitude'].values[0]
+        lon = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Longitude'].values[0]
+        lat = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Latitude'].values[0]
     
         # Marker data based on selected data column
         if data_column == 'count':
