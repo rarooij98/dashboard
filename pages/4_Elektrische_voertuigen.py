@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.figure_factory as ff
+import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
@@ -123,8 +123,15 @@ plt.xticks(rotation=45, ha='right')
 plt.title('Predicted Catalog Prices per Car Brand')
 plt.xlabel('Car Brand')
 plt.ylabel('Predicted Catalog Price')
-# Convert the Matplotlib plot to Plotly
-fig = ff.create_table(plt.gcf().axes[0].get_figure().get_axes()[0].get_table(), height_constant=2)
+# Convert the Matplotlib plot to a Plotly figure
+fig = go.Figure()
+# Extract the information from the Seaborn plot
+for trace in plt.gca().get_children():
+    if isinstance(trace, plt.bar.Bar):
+        fig.add_trace(go.Bar(x=trace.get_x(), y=trace.get_height(), name=trace.get_label(), marker_color='blue'))
+# Layout adjustments
+fig.update_layout(title='Predicted Catalog Prices per Car Brand', xaxis_title='Car Brand', yaxis_title='Predicted Catalog Price')
+fig.update_xaxes(tickangle=45, tickmode='array')
 # Display the Plotly figure in Streamlit
 st.plotly_chart(fig)
 
