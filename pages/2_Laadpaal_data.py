@@ -48,15 +48,18 @@ ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300)
 # Display the plot in Streamlit
 st.pyplot(fig_3)
 
-# New Figure
-# Filter the data
-filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
+# Plot Charge time VS Connected time
+st.write('''
+### Connectie tijd vs Oplaad tijd
+Zoals we hier kunnen zien zijn de meeste auto's veel langer verbonden aan de laadpaal dan dat ze daadwerkelijk opladen.
+''')
+fig = make_subplots(rows=1, cols=2, column_widths=[0.7, 0.3],
+                    subplot_titles=['Connected Time vs Charge Time', 'Mean Connected Time vs Mean Charge Time'])
 
 # Calculate the mean connected time and mean charging time
+filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
 mean_connected_time = filtered_df['ConnectedTime'].mean()
 mean_charge_time = filtered_df['ChargeTime'].mean()
-
-# Create a DataFrame for the mean values
 mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
 
@@ -71,22 +74,13 @@ fig2 = px.bar(mean_df, x='Type', y='Mean Time',
               title='Mean Connected Time vs Mean Charge Time',
               labels={'Mean Time': 'Time (minutes)'})
 
-# Create subplots
-fig = make_subplots(rows=1, cols=2,
-                    subplot_titles=['Connected Time vs Charge Time', 'Mean Connected Time vs Mean Charge Time'])
-
-# Add figures to subplots
+# Update layout and add traces
 fig.add_trace(fig1.data[0], row=1, col=1)
 fig.add_trace(fig2.data[0], row=1, col=2)
-
-# Update layout
 fig.update_xaxes(title='Charging Session', row=1, col=1)
 fig.update_yaxes(title='Time (minutes)', row=1, col=1)
-
 fig.update_xaxes(title='Type', row=1, col=2)
 fig.update_yaxes(title='Time (minutes)', row=1, col=2)
-
-# Show the figure
 st.plotly_chart(fig)
 
 st.write('''
