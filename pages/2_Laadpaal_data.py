@@ -82,8 +82,7 @@ fig.update_xaxes(title='Charging Session', row=1, col=1)
 fig.update_yaxes(title='Time (minutes)', row=1, col=1)
 fig.update_xaxes(title='Type', row=1, col=2)
 fig.update_yaxes(title='Time (minutes)', row=1, col=2)
-fig.update_layout(showlegend=True, row=1, col=1)
-fig.update_layout(showlegend=False, row=1, col=2)
+# fig.update_layout(showlegend=False, row=1, col=2)
 st.plotly_chart(fig)
 
 st.write('''
