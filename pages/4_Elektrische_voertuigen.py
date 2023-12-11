@@ -1,6 +1,8 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
@@ -46,7 +48,7 @@ st.write("### Meest voorkomende auto modellen")
 # Choose a car brand
 car_brand = st.selectbox("Selecteer een automerk", top_automerken.index)
 df_rdw_filtered = df_rdw[df_rdw['Merk'] == car_brand]
-st.write(f"Deze histogram laat de meest voorkomende elektrische auto's van het automerk '{car_brand}'.")
+st.write(f"Deze histogram laat de meest voorkomende elektrische auto's zien van het automerk '{car_brand}'.")
 fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Handelsbenaming'], labels={'x': 'Handelsbenaming'})
 fig.update_layout(xaxis_title="Handelsbenaming", yaxis_title="Aantal")
 st.plotly_chart(fig)
@@ -108,6 +110,24 @@ y_pred = ridge_model.predict(X_test)
 residuals = y_test - y_pred
 # Create a DataFrame to include residuals
 results_df = pd.DataFrame({'Werkelijke Catalogusprijs': y_test, 'Voorspelde Catalogusprijs': y_pred, 'Residuen': residuals})
+
+# Create a DataFrame with actual and predicted values
+brand_predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+# Add a 'CarBrand' column to the DataFrame based on your original DataFrame 'df_rdw'
+brand_predictions_df['CarBrand'] = df_rdw.loc[y_test.index, 'CarBrand'].values
+# Group by CarBrand and calculate the mean of actual and predicted values
+brand_means = brand_predictions_df.groupby('CarBrand').mean()
+# Sort the DataFrame by the predicted values
+brand_means = brand_means.sort_values(by='Predicted')
+
+# Create a bar plot
+plt.figure(figsize=(12, 6))
+sns.barplot(x=brand_means.index, y='Predicted', data=brand_means, color='blue')
+plt.xticks(rotation=45, ha='right')
+plt.title('Predicted Catalog Prices per Car Brand')
+plt.xlabel('Car Brand')
+plt.ylabel('Predicted Catalog Price')
+plt.show()
 
 # Scatter plot van werkelijke vs. voorspelde Catalogusprijs
 st.write("Voorspelde Catalogusprijs met Residuen")
