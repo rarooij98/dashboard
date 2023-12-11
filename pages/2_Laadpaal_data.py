@@ -65,17 +65,13 @@ mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
                         
 st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
-st.write(filtered_df.dtypes)
-# Check for missing values
-missing_values = filtered_df[['ConnectedTime', 'ChargeTime']].isnull().sum()
-if missing_values.any():
-    st.warning(f"Warning: There are missing values in the data:\n{missing_values}")
 
 # Create the stacked bar chart
 fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
               title='Connected Time vs Charge Time per Charging Session (Filtered)',
               labels={'value': 'Time (minutes)', 'variable': 'Type'},
               barmode='stack')
+print(fig1.data)
 
 # Create a grouped bar chart for mean values
 fig2 = px.bar(mean_df, x='Type', y='Mean Time',
