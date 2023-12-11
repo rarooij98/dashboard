@@ -113,10 +113,10 @@ results_df = pd.DataFrame({'Werkelijke Catalogusprijs': y_test, 'Voorspelde Cata
 
 # Create a DataFrame with actual and predicted values
 brand_predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
-# Add a 'CarBrand' column to the DataFrame based on your original DataFrame 'df_rdw'
-brand_predictions_df['CarBrand'] = df_rdw.loc[y_test.index, 'CarBrand'].values
-# Group by CarBrand and calculate the mean of actual and predicted values
-brand_means = brand_predictions_df.groupby('CarBrand').mean()
+# Add a 'Automerk' column to the DataFrame based on your original DataFrame 'df_rdw'
+brand_predictions_df['Automerk'] = df_rdw.loc[y_test.index, 'Automerk'].values
+# Group by Automerk and calculate the mean of actual and predicted values
+brand_means = brand_predictions_df.groupby('Automerk').mean()
 # Sort the DataFrame by the predicted values
 brand_means = brand_means.sort_values(by='Predicted')
 
