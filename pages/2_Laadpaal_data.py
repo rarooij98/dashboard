@@ -48,13 +48,14 @@ ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300)
 st.pyplot(fig_3)
 
 # New Figure
-fig = px.bar(df_lp, x='ConnectedTime', y='ChargeTime',
-             title='Comparison of ConnectedTime and ChargeTime',
-             labels={'ConnectedTime': 'Connected Time (minutes)', 'ChargeTime': 'Charge Time (minutes)'})
+fig = px.bar(df_lp, x=df_lp.index, y=['ConnectedTime', 'ChargeTime'],
+             title='Connected Time vs Charge Time per Charging Session',
+             labels={'value': 'Time (minutes)', 'variable': 'Type'},
+             barmode='stack')
 
 # Update layout
-fig.update_xaxes(title='Connected Time (minutes)')
-fig.update_yaxes(title='Charge Time (minutes)')
+fig.update_xaxes(title='Charging Session')
+fig.update_yaxes(title='Time (minutes)')
 
 # Show the figure
 st.plotly_chart(fig)
