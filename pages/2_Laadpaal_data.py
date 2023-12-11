@@ -58,16 +58,16 @@ fig = make_subplots(rows=1, cols=2, column_widths=[0.7, 0.3],
 
 # Calculate the mean connected time and mean charging time
 filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
+sampled_df = filtered_df.sample(n=25, random_state=42)
 mean_connected_time = filtered_df['ConnectedTime'].mean()
 mean_charge_time = filtered_df['ChargeTime'].mean()
 mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
                         
-st.write(filtered_df.index.astype(str))
 st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
 
 # Create the stacked bar chart
-fig1 = px.bar(df_lp, x=df_lp.index, y=['ConnectedTime', 'ChargeTime'],
+fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
               title='Connected Time vs Charge Time per Charging Session (Filtered)',
               labels={'value': 'Time (minutes)', 'variable': 'Type'},
               barmode='stack')
