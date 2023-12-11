@@ -114,6 +114,7 @@ results_df = pd.DataFrame({'Werkelijke Catalogusprijs': y_test, 'Voorspelde Cata
 # Create a DataFrame with actual and predicted values
 brand_predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
 st.write(brand_predictions_df.columns)
+st.write(y_pred)
 # Add a 'Automerk' column to the DataFrame based on your original DataFrame 'df_rdw'
 brand_predictions_df['Automerk'] = df_rdw.loc[y_test.index, 'Automerk'].values
 # Group by Automerk and calculate the mean of actual and predicted values
