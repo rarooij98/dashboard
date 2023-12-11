@@ -63,7 +63,7 @@ mean_charge_time = filtered_df['ChargeTime'].mean()
 mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
                         
-st.write(filtered_df.index.head())
+st.write(filtered_df.index)
 st.write(filtered_df['ConnectedTime', 'ChargeTime'].head())
 
 # Create the stacked bar chart
