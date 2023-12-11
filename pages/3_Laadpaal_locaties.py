@@ -128,8 +128,11 @@ def create_choropleth(Laadpalen):
         prov_markers = MarkerCluster().add_to(m)
     
     # Definieer de markers voor het Marker Cluster
-    Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
-    cum_count = 0
+    #Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
+    Laadpalen_markers = Laadpalen[
+        (Laadpalen['Year'].astype(int) <= selected_year) &  # Include all years before and including the selected year
+        (Laadpalen['Provincie'].isin(selected_prov))
+    ]
     
     def marker_colors(status):
         if status == True:
@@ -140,7 +143,6 @@ def create_choropleth(Laadpalen):
     # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
     if prov_markers:
         for index, row in Laadpalen_markers.iterrows():
-            cum_count += 1  # Increment cumulative count for each location
             status = row['StatusType.IsOperational'] if 'StatusType.IsOperational' in row else False
             folium.Marker(
                 [row['AddressInfo.Latitude'],
