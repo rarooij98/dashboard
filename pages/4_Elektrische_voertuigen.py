@@ -88,39 +88,77 @@ st.plotly_chart(fig)
 
 st.write("### Catalogusprijs voorspelling")
 
-# Selecteer de kenmerken (voorspellers) en de doelvariabele
+# # Selecteer de kenmerken (voorspellers) en de doelvariabele
+# X = df_rdw[['Aantal zitplaatsen', 'Lengte', 'Breedte', 'Vermogen massarijklaar']]
+# y = df_rdw['Catalogusprijs']
+# # Handle missing values by imputing with mean
+# imputer = SimpleImputer(strategy='mean')
+# X = imputer.fit_transform(X)
+# # Splits de gegevens in trainings- en testsets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# # Normalize the features
+# scaler = StandardScaler()
+# X_train = scaler.fit_transform(X_train)
+# X_test = scaler.transform(X_test)
+# # Create a Ridge regression model
+# ridge_model = Ridge(alpha=1.0)  # You can adjust the alpha (regularization strength)
+# # Fit the model
+# ridge_model.fit(X_train, y_train)
+# # Make predictions
+# y_pred = ridge_model.predict(X_test)
+# # Calculate residuals
+# residuals = y_test - y_pred
+# # Create a DataFrame to include residuals
+# results_df = pd.DataFrame({'Werkelijke Catalogusprijs': y_test, 'Voorspelde Catalogusprijs': y_pred, 'Residuen': residuals})
+
+# # Create a DataFrame with actual and predicted values
+# brand_predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+# st.write(brand_predictions_df.columns)
+# st.write(y_pred)
+# # Add a 'Automerk' column to the DataFrame based on your original DataFrame 'df_rdw'
+# brand_predictions_df['Automerk'] = df_rdw.loc[y_test.index, 'Automerk'].values
+# # Group by Automerk and calculate the mean of actual and predicted values
+# brand_means = brand_predictions_df.groupby('Automerk').mean()
+# # Sort the DataFrame by the predicted values
+# brand_means = brand_means.sort_values(by='Predicted')
+
+# Assuming 'Automerk' is a column in the original DataFrame 'df_rdw'
 X = df_rdw[['Aantal zitplaatsen', 'Lengte', 'Breedte', 'Vermogen massarijklaar']]
 y = df_rdw['Catalogusprijs']
+
 # Handle missing values by imputing with mean
 imputer = SimpleImputer(strategy='mean')
 X = imputer.fit_transform(X)
+
 # Splits de gegevens in trainings- en testsets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
 # Normalize the features
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+
 # Create a Ridge regression model
 ridge_model = Ridge(alpha=1.0)  # You can adjust the alpha (regularization strength)
+
 # Fit the model
 ridge_model.fit(X_train, y_train)
+
 # Make predictions
 y_pred = ridge_model.predict(X_test)
-# Calculate residuals
-residuals = y_test - y_pred
-# Create a DataFrame to include residuals
-results_df = pd.DataFrame({'Werkelijke Catalogusprijs': y_test, 'Voorspelde Catalogusprijs': y_pred, 'Residuen': residuals})
 
-# Create a DataFrame with actual and predicted values
-brand_predictions_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
-st.write(brand_predictions_df.columns)
-st.write(y_pred)
-# Add a 'Automerk' column to the DataFrame based on your original DataFrame 'df_rdw'
-brand_predictions_df['Automerk'] = df_rdw.loc[y_test.index, 'Automerk'].values
-# Group by Automerk and calculate the mean of actual and predicted values
-brand_means = brand_predictions_df.groupby('Automerk').mean()
-# Sort the DataFrame by the predicted values
-brand_means = brand_means.sort_values(by='Predicted')
+# Create a DataFrame to include residuals and 'Automerk'
+results_df = pd.DataFrame({
+    'Werkelijke Catalogusprijs': y_test,
+    'Voorspelde Catalogusprijs': y_pred,
+    'Residuen': y_test - y_pred,
+    'Automerk': df_rdw.loc[y_test.index, 'Automerk'].values  # Extract 'Automerk' for each prediction
+})
+
+# Display the DataFrame
+print(results_df.head())
+brand_means = results_df.groupby('Automerk').mean()
+print(brand_means.head())
 
 # Create a bar plot
 plt.figure(figsize=(12, 6))
