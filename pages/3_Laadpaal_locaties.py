@@ -43,6 +43,7 @@ def create_cumcount(data, geodata):
         if row['cum_count'] == 0 and row['Year'] > 2011:
             selection = cumcount_df.loc[(cumcount_df['Provincie']==row['Provincie']) & (cumcount_df['Year']==row['Year']-1)]
             cumcount_df.at[index,'cum_count'] = selection['cum_count']
+    st.write(cumcount_df)
     # Bereken de laadpalen per km2 (obv de cum_count)
     area_dict = geodata.set_index('PROVINCIENAAM')['SHAPE.AREA'].to_dict()
     cumcount_df['area'] = cumcount_df['Provincie'].map(area_dict)
