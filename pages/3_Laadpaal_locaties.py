@@ -132,6 +132,7 @@ def create_choropleth(Laadpalen):
         # Get lon and lat values from df_locations
         lon = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Longitude'].values[0]
         lat = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Latitude'].values[0]
+        st.write(lon, lat)
     
         # Marker data based on selected data column
         if data_column == 'count':
