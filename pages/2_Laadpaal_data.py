@@ -72,7 +72,7 @@ st.plotly_chart(fig)
 
 st.write('''
 ### Verdeling oplaadtijd
-De gemiddelde oplaadtijd is 105 minuten, de mediaan ligt iets hoger met 134 minuten.
+De gemiddelde oplaadtijd is 106 minuten, de mediaan ligt iets hoger met 134 minuten.
 ''')
 # Set a custom style (optional)
 sns.set(style="whitegrid")
