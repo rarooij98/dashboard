@@ -54,8 +54,8 @@ st.plotly_chart(fig)
 # Histogram van meest voorkomende kleuren
 st.write("### Meest voorkomende auto kleuren")
 st.write(f"Deze histogram laat de meest voorkomende kleuren zien van elektrische auto's van het automerk '{car_brand}'.")
-average_selected_prices = df_rdw_filtered.sort_values(by='Eerste kleur', ascending=False)
-fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'})
+df_rdw_filtered_sorted = df_rdw_filtered.sort_values(by='Eerste kleur', ascending=False)
+fig = px.histogram(df_rdw_filtered_sorted, x=df_rdw_filtered_sorted['Eerste kleur'], labels={'x': 'Eerste kleur'})
 fig.update_layout(xaxis_title="Eerste kleur", yaxis_title="Aantal")
 st.plotly_chart(fig)
 
