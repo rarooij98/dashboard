@@ -48,9 +48,9 @@ ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300)
 st.pyplot(fig_3)
 
 # New Figure
-fig = px.scatter(df_lp, x='ConnectedTime', y='ChargeTime',
-                 title='Comparison of ConnectedTime and ChargeTime',
-                 labels={'ConnectedTime': 'Connected Time (minutes)', 'ChargeTime': 'Charge Time (minutes)'})
+fig = px.bar(df_lp, x='ConnectedTime', y='ChargeTime',
+             title='Comparison of ConnectedTime and ChargeTime',
+             labels={'ConnectedTime': 'Connected Time (minutes)', 'ChargeTime': 'Charge Time (minutes)'})
 
 # Update layout
 fig.update_xaxes(title='Connected Time (minutes)')
