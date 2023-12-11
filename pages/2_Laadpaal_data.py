@@ -65,7 +65,7 @@ mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
 
 # Create the stacked bar chart
-fig = px.bar(filtered_df, x=filtered_df.index, y=['ConnectedTime', 'ChargeTime'],
+fig1 = px.bar(filtered_df, x=filtered_df.index, y=['ConnectedTime', 'ChargeTime'],
              title='Connected Time vs Charge Time per Charging Session (Filtered)',
              labels={'value': 'Time (minutes)', 'variable': 'Type'},
              barmode='stack')
@@ -76,7 +76,7 @@ fig2 = px.bar(mean_df, x='Type', y='Mean Time',
               labels={'Mean Time': 'Time (minutes)'})
 
 # Add traces
-fig.add_trace(fig.data[0], row=1, col=1)
+fig.add_trace(fig1.data[0], row=1, col=1)
 fig.add_trace(fig2.data[0], row=1, col=2)
 
 # Update layout
