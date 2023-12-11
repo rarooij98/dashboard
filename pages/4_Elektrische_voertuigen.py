@@ -70,7 +70,7 @@ color_mapping = {
     'BRUIN': 'brown',
 }
 df_rdw_filtered['Eerste kleur'] = pd.Categorical(df_rdw_filtered['Eerste kleur'], categories=color_mapping.keys(), ordered=True)
-fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'}, category_orders={'Eerste kleur': sorted_colors}, color_discrete_map=color_mapping)
+fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'}, category_orders={'Eerste kleur': sorted_colors}, color='Eerste kleur', color_discrete_map=color_mapping)
 fig.update_layout(xaxis_title="Eerste kleur", yaxis_title="Aantal")
 st.plotly_chart(fig)
 
