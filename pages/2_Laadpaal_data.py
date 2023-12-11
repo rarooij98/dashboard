@@ -67,7 +67,7 @@ st.write(filtered_df.index.astype(str))
 st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
 
 # Create the stacked bar chart
-fig1 = px.bar(filtered_df, x='filtered_df.index', y=['ConnectedTime', 'ChargeTime'],
+fig1 = px.bar(df_lp, x=df_lp.index, y=['ConnectedTime', 'ChargeTime'],
               title='Connected Time vs Charge Time per Charging Session (Filtered)',
               labels={'value': 'Time (minutes)', 'variable': 'Type'},
               barmode='stack')
