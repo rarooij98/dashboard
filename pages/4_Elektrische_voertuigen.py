@@ -1,9 +1,6 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
@@ -116,19 +113,14 @@ results_df = pd.DataFrame({
 })
 brand_means = results_df.groupby('Merk').mean()
 
-# Create a bar plot using Seaborn and Matplotlib
-plt.figure(figsize=(12, 6))
-sns.barplot(x=brand_means.index, y='Voorspelde Catalogusprijs', data=brand_means, color='blue')
-plt.xticks(rotation=45, ha='right')
-plt.title('Predicted Catalog Prices per Car Brand')
-plt.xlabel('Car Brand')
-plt.ylabel('Predicted Catalog Price')
-# Convert the Matplotlib plot to a Plotly figure
-fig = go.Figure()
-# Extract the information from the Seaborn plot
-for trace in plt.gca().get_children():
-    if isinstance(trace, plt.bar.Bar):
-        fig.add_trace(go.Bar(x=trace.get_x(), y=trace.get_height(), name=trace.get_label(), marker_color='blue'))
+# Create a Plotly bar plot
+fig = px.bar(
+    brand_means,
+    x=brand_means.index,
+    y='Voorspelde Catalogusprijs',
+    color='Voorspelde Catalogusprijs',  # You can remove this line if you don't want color differentiation
+    labels={'Voorspelde Catalogusprijs': 'Predicted Catalog Price'},
+)
 # Layout adjustments
 fig.update_layout(title='Predicted Catalog Prices per Car Brand', xaxis_title='Car Brand', yaxis_title='Predicted Catalog Price')
 fig.update_xaxes(tickangle=45, tickmode='array')
