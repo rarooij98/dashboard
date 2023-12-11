@@ -8,7 +8,7 @@ import statsmodels.formula.api as smf
 from statsmodels.tools import add_constant
 
 # ---------------- SETTINGS -------------------
-page_title = 'Laadtijden rapportage'
+page_title = 'Laadpaal data'
 page_icon = '💈' #https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
@@ -26,7 +26,7 @@ from data.laadpaaldata import laadpaal_data as df_lp
 st.title(page_title + ' ' + page_icon)
 
 st.write('''
-         **Histogram**
+### Histogram
 In de histogram wordt de verdeling van de oplaadtijden in minuten weergegeven. Uit de grafiek blijkt dat de gemiddelde oplaadtijd 105 minuten bedraagt, terwijl de mediaan 134 minuten is.
 ''')
 
@@ -47,10 +47,21 @@ ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300)
 # Display the plot in Streamlit
 st.pyplot(fig_3)
 
+# New Figure
+fig = px.scatter(df_lp, x='ConnectedTime', y='ChargeTime',
+                 title='Comparison of ConnectedTime and ChargeTime',
+                 labels={'ConnectedTime': 'Connected Time (minutes)', 'ChargeTime': 'Charge Time (minutes)'})
+
+# Update layout
+fig.update_xaxes(title='Connected Time (minutes)')
+fig.update_yaxes(title='Charge Time (minutes)')
+
+# Show the figure
+st.plotly_chart(fig)
 
 st.write('''
-         **verdeling laadpalen**
-In de grafiek en staafdiagram ziet u de verdeling van laadpalen gedurende de dag. Uit de grafiek is af te leiden dat het om 7 uur 's ochtends het drukst is, met 1053 oplaadsessies. Om 1 uur 's nachts is het daarentegen het rustigst, met slechts 4 oplaadsessies. Verder valt op te maken uit de staafdiagram dat de ochtenduren het drukst zijn, gevolgd door een afname gedurende de dag.
+### Oplaad momenten
+In deze lijngrafiek ziet u de verdeling van laadpalen gedurende de dag. Om 7 uur 's ochtends is het het drukst is, met 1053 oplaadsessies. Om 1 uur 's nachts is het daarentegen het rustigst, met slechts 4 oplaadsessies. Verder valt op te maken uit de staafdiagram dat de ochtenduren het drukst zijn, gevolgd door een afname gedurende de dag.
 ''')
 
 # Converteer de 'Started' en 'Ended' kolommen naar datetime-objecten

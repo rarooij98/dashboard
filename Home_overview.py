@@ -10,7 +10,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
 # ---------------- SETTINGS -------------------
-page_title = 'Elektrisch Laadpalen'
+page_title = 'Elektrische Laadpalen'
 page_icon = '⚡' # https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
@@ -31,7 +31,7 @@ st.title(page_title + ' ' + page_icon)
 
 st.write('''
 ### Introductie
-In dit data dashboard analyseren we elektrische laadpalen in Nederland. 
+In dit data dashboard analyseren we de elektrische laadpalen in Nederland. 
 Op de eerste pagina zullen we data onderzoeken over het gebruik van de laadpalen, we vragen ons bijvoorbeeld af: hoelang wordt er gemiddeld geladen, wanneer is het het drukst bij de laadpalen?
 Op de tweede pagina zullen we de locaties van de laadpalen in Nederland weergeven, en kijken waar er over de jaren heen laadpalen bij zijn gebouwd. 
 Ten slotte duiken we op de derde pagina in de voertuigregistratie gegevens van de RDW om een beeld te krijgen van wat voor voertuigen gebruik maken van de laadpalen.
