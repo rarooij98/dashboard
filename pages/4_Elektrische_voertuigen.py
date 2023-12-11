@@ -122,7 +122,7 @@ plt.xticks(rotation=45, ha='right')
 plt.title('Predicted Catalog Prices per Car Brand')
 plt.xlabel('Car Brand')
 plt.ylabel('Predicted Catalog Price')
-plt.show()
+st.plotly_chart(plt)
 
 # Scatter plot van werkelijke vs. voorspelde Catalogusprijs
 st.write("Voorspelde Catalogusprijs met Residuen")
