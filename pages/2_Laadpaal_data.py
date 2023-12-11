@@ -51,7 +51,7 @@ st.pyplot(fig_3)
 # Plot Charge time VS Connected time
 st.write('''
 ### Connectie tijd vs Oplaad tijd
-Zoals we hier kunnen zien zijn de meeste auto's veel langer verbonden aan de laadpaal dan dat ze daadwerkelijk opladen.
+De meeste auto's zijn veel langer verbonden met de laadpaal dan dat ze daadwerkelijk opladen, gemiddeld zo'n 3 keer zo lang.
 ''')
 # Calculate the mean connected time and mean charging time
 filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
@@ -61,7 +61,7 @@ mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         'Mean Time': [mean_connected_time, mean_charge_time]})
 # Create a grouped bar chart for mean values
 fig = px.bar(mean_df, x='Type', y='Mean Time',
-              labels={'Mean Time': 'Time (minutes)'})
+              labels={'Mean Time': 'Time (hours)'})
 # Update layout
 fig.update_xaxes(title='Type')
 fig.update_yaxes(title='Time (minutes)')
