@@ -122,9 +122,6 @@ st.write("### Catalogusprijs voorspelling")
 # # Sort the DataFrame by the predicted values
 # brand_means = brand_means.sort_values(by='Predicted')
 
-st.write(df_rdw.columns)
-
-# Assuming 'Automerk' is a column in the original DataFrame 'df_rdw'
 X = df_rdw[['Aantal zitplaatsen', 'Lengte', 'Breedte', 'Vermogen massarijklaar']]
 y = df_rdw['Catalogusprijs']
 
@@ -149,17 +146,17 @@ ridge_model.fit(X_train, y_train)
 # Make predictions
 y_pred = ridge_model.predict(X_test)
 
-# Create a DataFrame to include residuals and 'Automerk'
+# Create a DataFrame to include residuals and 'Merk'
 results_df = pd.DataFrame({
     'Werkelijke Catalogusprijs': y_test,
     'Voorspelde Catalogusprijs': y_pred,
     'Residuen': y_test - y_pred,
-    'Automerk': df_rdw.loc[y_test.index, 'Automerk'].values  # Extract 'Automerk' for each prediction
+    'Merk': df_rdw.loc[y_test.index, 'Merk'].values  # Extract 'Merk' for each prediction
 })
 
 # Display the DataFrame
 print(results_df.head())
-brand_means = results_df.groupby('Automerk').mean()
+brand_means = results_df.groupby('Merk').mean()
 print(brand_means.head())
 
 # Create a bar plot
