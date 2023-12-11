@@ -119,6 +119,7 @@ fig = px.bar(
     x=brand_means.index,
     y='Voorspelde Catalogusprijs',
     color='Voorspelde Catalogusprijs',  # You can remove this line if you don't want color differentiation
+    color_continuous_scale='Viridis',  # Use the Viridis colorscale
     labels={'Voorspelde Catalogusprijs': 'Predicted Catalog Price'},
 )
 # Layout adjustments
