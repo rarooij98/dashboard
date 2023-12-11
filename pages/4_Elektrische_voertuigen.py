@@ -151,7 +151,7 @@ st.write("Deze scatterplot laat de vergelijking zien tussen de werkelijke en de 
 fig = px.scatter(results_df, x='Werkelijke Catalogusprijs', y='Voorspelde Catalogusprijs', color='Residuen',
                  labels={'x': 'Werkelijke Catalogusprijs', 'y': 'Voorspelde Catalogusprijs'},
                  title='Werkelijke vs. Voorspelde Catalogusprijs met Residuen',
-                 color_continuous_scale='RdBu', range_color=[-200000, 200000])
+                 color_continuous_scale='RdBu', range_color=[-200000, 200000], trendline='ols')
 
 # Customize the colorbar title
 fig.update_coloraxes(colorbar_title='Residuen')
