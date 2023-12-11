@@ -75,7 +75,7 @@ st.write('''
 De gemiddelde oplaadtijd is 105 minuten, de mediaan ligt iets hoger met 134 minuten.
 ''')
 # Set a custom style (optional)
-sns.set(style="darkgrid")
+sns.set(style="dark")
 
 # Create a smaller figure with a specified size
 fig_3, ax = plt.subplots(figsize=(8, 6))
