@@ -117,6 +117,10 @@ zoom = 7
     # st.write(centroid)
     # st.write(location)
     # zoom = 9
+    
+# Join the Laadpalen dataframe and the dataframe with the cumulative count
+merged_df = pd.merge(df_laadpaal, cumcount_selection, on='Year', how='outer')
+st.write(merged_df)
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
@@ -175,4 +179,4 @@ def create_choropleth(Laadpalen):
     
     st.map = st_folium(m, width=700, height=600)
 
-create_choropleth(cumcount_selection)
+create_choropleth(df_laadpaal)
