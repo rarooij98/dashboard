@@ -66,6 +66,10 @@ mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
                         
 st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
 st.write(filtered_df.dtypes)
+# Check for missing values
+missing_values = filtered_df[['ConnectedTime', 'ChargeTime']].isnull().sum()
+if missing_values.any():
+    st.warning(f"Warning: There are missing values in the data:\n{missing_values}")
 
 # Create the stacked bar chart
 fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
