@@ -83,6 +83,8 @@ fig_3, ax = plt.subplots(figsize=(8, 6))
 # Plot the histogram using seaborn for improved aesthetics
 sns.histplot(df_lp['ChargeTime_min'], bins=range(0, 520, 20), edgecolor='black', ax=ax, kde=False)
 
+ax.set_facecolor('black')
+
 # Add labels and title
 ax.set_xlabel('Charge Time (minutes)')
 ax.set_ylabel('Frequency')
