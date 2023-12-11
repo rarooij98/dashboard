@@ -3,6 +3,7 @@ import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.figure_factory as ff
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
@@ -115,14 +116,17 @@ results_df = pd.DataFrame({
 })
 brand_means = results_df.groupby('Merk').mean()
 
-# Create a bar plot
+# Create a bar plot using Seaborn and Matplotlib
 plt.figure(figsize=(12, 6))
 sns.barplot(x=brand_means.index, y='Voorspelde Catalogusprijs', data=brand_means, color='blue')
 plt.xticks(rotation=45, ha='right')
 plt.title('Predicted Catalog Prices per Car Brand')
 plt.xlabel('Car Brand')
 plt.ylabel('Predicted Catalog Price')
-st.plotly_chart(plt)
+# Convert the Matplotlib plot to Plotly
+fig = ff.create_table(plt.gcf().axes[0].get_figure().get_axes()[0].get_table(), height_constant=2)
+# Display the Plotly figure in Streamlit
+st.plotly_chart(fig)
 
 # Scatter plot van werkelijke vs. voorspelde Catalogusprijs
 st.write("Voorspelde Catalogusprijs met Residuen")
