@@ -59,15 +59,15 @@ st.write(f"Deze histogram laat de meest voorkomende kleuren zien van elektrische
 color_counts = df_rdw_filtered['Eerste kleur'].value_counts()
 sorted_colors = color_counts.index
 color_mapping = {
-    'Rood': 'red',
-    'Blauw': 'blue',
-    'Groen': 'green',
-    'Wit': 'white',
-    'Zwart': 'black',
-    'Paars': 'purple',
-    'Grijs': 'grey',
-    'Oranje': 'orange',
-    'Bruin': 'brown',
+    'ROOD': 'red',
+    'BLAUW': 'blue',
+    'GROEN': 'green',
+    'WIT': 'white',
+    'ZWART': 'black',
+    'PAARS': 'purple',
+    'GRIJS': 'grey',
+    'ORANJE': 'orange',
+    'BRUIN': 'brown',
 }
 fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'}, category_orders={'Eerste kleur': sorted_colors}, color_discrete_map=color_mapping)
 fig.update_layout(xaxis_title="Eerste kleur", yaxis_title="Aantal")
