@@ -58,7 +58,18 @@ st.write("### Meest voorkomende auto kleuren")
 st.write(f"Deze histogram laat de meest voorkomende kleuren zien van elektrische auto's van het automerk '{car_brand}'.")
 color_counts = df_rdw_filtered['Eerste kleur'].value_counts()
 sorted_colors = color_counts.index
-fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'}, category_orders={'Eerste kleur': sorted_colors})
+color_mapping = {
+    'Rood': 'red',
+    'Blauw': 'blue',
+    'Groen': 'green',
+    'Wit': 'white',
+    'Zwart': 'black',
+    'Paars': 'purple',
+    'Grijs': 'grey',
+    'Oranje': 'orange',
+    'Bruin': 'brown',
+}
+fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Eerste kleur'], labels={'x': 'Eerste kleur'}, category_orders={'Eerste kleur': sorted_colors}, color_discrete_map=color_mapping)
 fig.update_layout(xaxis_title="Eerste kleur", yaxis_title="Aantal")
 st.plotly_chart(fig)
 
@@ -116,7 +127,7 @@ results_df = pd.DataFrame({
 })
 brand_means = results_df.groupby('Merk').mean()
 
-st.write("Met een lineare regressie model hebben we geprobeerd om de catalogusprijs te voorspellen.")
+st.write("Met een lineare regressie model hebben we geprobeerd om de catalogusprijzen van automerken te voorspellen aan de hand van de features 'Aantal zitplaatsen', 'Lengte', 'Breedte' en 'Vermogen massarijklaar'.")
 # Create a Plotly bar plot
 fig = px.bar(
     brand_means,
@@ -134,7 +145,7 @@ st.plotly_chart(fig)
 
 # Scatter plot van werkelijke vs. voorspelde Catalogusprijs
 st.write("### Voorspelde Catalogusprijs met Residuen")
-st.write("Deze scatterplot laat de vergelijking zien tussen de werkelijke en de voorspelde catalogusprijs.")
+st.write("Deze scatterplot laat de vergelijking zien tussen de werkelijke en de voorspelde catalogusprijzen. Hier geven rodere punten een overschatting aan, en blauwere punten een onderschatting.")
 # Create a scatter plot of actual vs. predicted values with a color scale based on residuals
 fig = px.scatter(results_df, x='Werkelijke Catalogusprijs', y='Voorspelde Catalogusprijs', color='Residuen',
                  labels={'x': 'Werkelijke Catalogusprijs', 'y': 'Voorspelde Catalogusprijs'},
