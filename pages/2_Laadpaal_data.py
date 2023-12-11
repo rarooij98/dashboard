@@ -27,52 +27,9 @@ from data.laadpaaldata import laadpaal_data as df_lp
 st.title(page_title + ' ' + page_icon)
 
 st.write('''
-### Histogram
-In de histogram wordt de verdeling van de oplaadtijden in minuten weergegeven. Uit de grafiek blijkt dat de gemiddelde oplaadtijd 105 minuten bedraagt, terwijl de mediaan 134 minuten is.
-''')
-
-# Create a histogram of ChargeTime_min
-fig_3, ax = plt.subplots()
-ax.hist(df_lp['ChargeTime_min'], bins=range(0, 520, 20), edgecolor='black')
-# Add labels and title
-ax.set_xlabel('Charge Time (minutes)')
-ax.set_ylabel('Frequency')
-ax.set_title('Histogram of Charge Times')
-# Add annotation for mean and median
-mean = df_lp['ChargeTime_min'].mean()
-median = df_lp['ChargeTime_min'].median()
-ax.axvline(mean, color='red', linestyle='dashed', linewidth=1)
-ax.axvline(median, color='green', linestyle='dashed', linewidth=1)
-ax.annotate(f"Mean: {mean:.0f}", xy=(mean, 1400), xytext=(mean-120, 1300), arrowprops=dict(facecolor='red', arrowstyle='->'))
-ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300), arrowprops=dict(facecolor='green', arrowstyle='->'))
-# Display the plot in Streamlit
-st.pyplot(fig_3)
-
-# Plot Charge time VS Connected time
-st.write('''
-### Connectie tijd vs Oplaad tijd
-De meeste auto's zijn veel langer verbonden met de laadpaal dan dat ze daadwerkelijk opladen, gemiddeld zo'n 3 keer zo lang.
-''')
-# Calculate the mean connected time and mean charging time
-filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
-mean_connected_time = filtered_df['ConnectedTime'].mean()
-mean_charge_time = filtered_df['ChargeTime'].mean()
-mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
-                        'Mean Time': [mean_connected_time, mean_charge_time]})
-# Create a grouped bar chart for mean values
-fig = px.bar(mean_df, x='Type', y='Mean Time',
-              labels={'Mean Time': 'Time (hours)'})
-# Update layout
-fig.update_xaxes(title='Type')
-fig.update_yaxes(title='Time (minutes)')
-# Add title
-fig.update_layout(title_text='Mean Connected Time vs Mean Charge Time')
-# Show the figure
-st.plotly_chart(fig)
-
-st.write('''
 ### Oplaad momenten
-In deze lijngrafiek ziet u de verdeling van laadpalen gedurende de dag. Om 7 uur 's ochtends is het het drukst is, met 1053 oplaadsessies. Om 1 uur 's nachts is het daarentegen het rustigst, met slechts 4 oplaadsessies. Verder valt op te maken uit de staafdiagram dat de ochtenduren het drukst zijn, gevolgd door een afname gedurende de dag.
+Dit is de verdeling van het gebruik van de laadpalen gedurende de dag. Om 7 uur 's ochtends is het het drukst is, met 1053 oplaadsessies. Om 1 uur 's nachts is het daarentegen het rustigst, met slechts 4 oplaadsessies. 
+Er lijken pieken te zijn wanneer mensen 's morgens de deur uitgaan (06:00-08:00), tijdens de lunch (11:00) en aan het einde van de werkdag (16:00).
 ''')
 
 # Converteer de 'Started' en 'Ended' kolommen naar datetime-objecten
@@ -92,55 +49,55 @@ fig.update_xaxes(title='Hour of the day')
 fig.update_yaxes(title='Number of charging sessions')
 st.plotly_chart(fig)
 
-# Bepaal het tijdstip van de dag op basis van het starttijdstip
-def get_time_of_day(hour):
-    if 5 <= hour < 12:
-        return 'Morning'
-    elif 12 <= hour < 17:
-        return 'Afternoon'
-    elif 17 <= hour < 21:
-        return 'Evening'
-    else:
-        return 'Night'
-
-df_lp['TimeOfDay'] = df_lp['Started'].dt.hour.apply(get_time_of_day)
-
-# Tel het aantal oplaadsessies per tijdstip van de dag
-time_of_day_counts = df_lp['TimeOfDay'].value_counts().reset_index()
-time_of_day_counts.columns = ['TimeOfDay', 'Count']
-
-# Plotly Bar Chart
-fig = px.bar(time_of_day_counts, x='TimeOfDay', y='Count', title='Charging station occupancy at various times of the day')
-fig.update_xaxes(title='Time of day')
-fig.update_yaxes(title='Number of charging sessions')
+# Plot Charge time VS Connected time
+st.write('''
+### ConnectedTime vs ChargeTime
+De meeste auto's zijn veel langer verbonden met de laadpaal dan dat ze daadwerkelijk opladen, gemiddeld wel 3 keer zo lang.
+''')
+# Calculate the mean connected time and mean charging time
+filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
+mean_connected_time = filtered_df['ConnectedTime'].mean()
+mean_charge_time = filtered_df['ChargeTime'].mean()
+mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
+                        'Mean Time': [mean_connected_time, mean_charge_time]})
+# Create a grouped bar chart for mean values
+fig = px.bar(mean_df, x='Type', y='Mean Time')
+# Update layout
+fig.update_xaxes(title='Type')
+fig.update_yaxes(title='Time (hours)')
+# Add title
+fig.update_layout(title_text='Mean Connected Time vs Mean Charge Time')
+# Show the figure
 st.plotly_chart(fig)
 
 st.write('''
-    ## Scatter plot met Regression Line
-    De kosten zijn berekend aan de hand van de prijs per kWh, die online is gevonden, vermenigvuldigd met het totale energieverbruik in kWh.
-    De hoeveelheid energie in kWh is ook berekend door het totale energieverbruik in kWh te delen door de aangesloten tijd.
-    Uit het onderstande spreidingsdiagram kunnen we zien dat de maximale kracht ongeveer 16,11 kWh is, wat ons een kostprijs oplevert van 19,66.
-    Ook is het gemiddelde energieverbruik ongeveer 2,45, wat ons een kostprijs oplevert van ongeveer 4,69.
+### Oplaadtijd
+De gemiddelde oplaadtijd is 105 minuten, de mediaan ligt iets hoger met 134 minuten.
 ''')
+# Set a custom style (optional)
+sns.set(style="whitegrid")
 
-# Perform linear regression
-model = smf.ols(formula='Cost ~ Power_kwh', data=df_lp).fit()
+# Create a smaller figure with a specified size
+fig_3, ax = plt.subplots(figsize=(8, 6))
 
-# Add constant to the independent variable
-X = add_constant(df_lp['Power_kwh'])
+# Plot the histogram using seaborn for improved aesthetics
+sns.histplot(df_lp['ChargeTime_min'], bins=range(0, 520, 20), edgecolor='black', ax=ax, kde=False)
 
-# Perform linear regression with a constant term
-model = smf.ols(formula='Cost ~ Power_kwh', data=pd.concat([df_lp['Cost'], X], axis=1)).fit()
+# Add labels and title
+ax.set_xlabel('Charge Time (minutes)')
+ax.set_ylabel('Frequency')
+ax.set_title('Histogram of Charge Times')
 
-# Create scatter plot
-fig_7, ax = plt.subplots()
-sns.scatterplot(x=df_lp['Power_kwh'], y=df_lp['Cost'], ax=ax)
+# Add annotation for mean and median
+mean = df_lp['ChargeTime_min'].mean()
+median = df_lp['ChargeTime_min'].median()
+ax.axvline(mean, color='red', linestyle='dashed', linewidth=1)
+ax.axvline(median, color='green', linestyle='dashed', linewidth=1)
+ax.annotate(f"Mean: {mean:.0f}", xy=(mean, 1400), xytext=(mean-120, 1300), arrowprops=dict(facecolor='red', arrowstyle='->'))
+ax.annotate(f"Median: {median:.0f}", xy=(median, 1400), xytext=(median+60, 1300), arrowprops=dict(facecolor='green', arrowstyle='->'))
 
-# Generate regression line
-x_values = np.linspace(df_lp['Power_kwh'].min(), df_lp['Power_kwh'].max(), 100)
-y_values = model.predict(pd.DataFrame({'Power_kwh': x_values}))
-ax.plot(x_values, y_values, color='red', label='Regression Line')
-ax.legend()
+# Adjust the layout to prevent clipping of labels
+plt.tight_layout()
 
-# Display the plot
-st.pyplot(fig_7)
+# Show the plot
+st.pyplot(fig_3)
