@@ -161,7 +161,7 @@ st.write(brand_means.head())
 
 # Create a bar plot
 plt.figure(figsize=(12, 6))
-sns.barplot(x=brand_means.index, y='Predicted', data=brand_means, color='blue')
+sns.barplot(x='Merk', y='Voorspelde Catalogusprijs', data=brand_means, color='blue')
 plt.xticks(rotation=45, ha='right')
 plt.title('Predicted Catalog Prices per Car Brand')
 plt.xlabel('Car Brand')
