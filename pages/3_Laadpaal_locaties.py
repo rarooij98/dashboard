@@ -1,16 +1,13 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 
 # ---------------- SETTINGS -------------------
 page_title = 'Laadpalen in Nederland'
-page_icon = ':oncoming_automobile:' #https://www.webfx.com/tools/emoji-cheat-sheet/
+page_icon = '🗺' #https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
 st.set_page_config(

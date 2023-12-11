@@ -1,16 +1,12 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 import plotly.express as px
-from plotly.subplots import make_subplots
-import statsmodels.formula.api as smf
-from statsmodels.tools import add_constant
+import seaborn as sns
 
 # ---------------- SETTINGS -------------------
 page_title = 'Laadpaal data'
-page_icon = '💈' #https://www.webfx.com/tools/emoji-cheat-sheet/
+page_icon = '🔌' #https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = 'centered'
 
 st.set_page_config(
