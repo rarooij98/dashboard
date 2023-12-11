@@ -53,9 +53,16 @@ st.write('''
 ### Connectie tijd vs Oplaad tijd
 Zoals we hier kunnen zien zijn de meeste auto's veel langer verbonden aan de laadpaal dan dat ze daadwerkelijk opladen.
 ''')
-
+fig = make_subplots(rows=1, cols=2, column_widths=[0.7, 0.3],
+                    subplot_titles=['Connected Time vs Charge Time', 'Mean Connected Time vs Mean Charge Time'])
 # Filter the data
 filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
+
+# Calculate the mean connected time and mean charging time
+mean_connected_time = filtered_df['ConnectedTime'].mean()
+mean_charge_time = filtered_df['ChargeTime'].mean()
+mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
+                        'Mean Time': [mean_connected_time, mean_charge_time]})
 
 # Create the stacked bar chart
 fig = px.bar(filtered_df, x=filtered_df.index, y=['ConnectedTime', 'ChargeTime'],
@@ -63,47 +70,24 @@ fig = px.bar(filtered_df, x=filtered_df.index, y=['ConnectedTime', 'ChargeTime']
              labels={'value': 'Time (minutes)', 'variable': 'Type'},
              barmode='stack')
 
+# Create a grouped bar chart for mean values
+fig2 = px.bar(mean_df, x='Type', y='Mean Time',
+              title='Mean Connected Time vs Mean Charge Time',
+              labels={'Mean Time': 'Time (minutes)'})
+
+# Add traces
+fig.add_trace(fig.data[0], row=1, col=1)
+fig.add_trace(fig2.data[0], row=1, col=2)
+
 # Update layout
-fig.update_xaxes(title='Charging Session')
-fig.update_yaxes(title='Time (minutes)')
+fig.update_xaxes(title='Charging Session', row=1, col=1)
+fig.update_yaxes(title='Time (minutes)', row=1, col=1)
+fig.update_xaxes(title='Type', row=1, col=2)
+fig.update_yaxes(title='Time (minutes)', row=1, col=2)
 
 # Show the figure
 st.plotly_chart(fig)
 
-# fig = make_subplots(rows=1, cols=2, column_widths=[0.7, 0.3],
-#                     subplot_titles=['Connected Time vs Charge Time', 'Mean Connected Time vs Mean Charge Time'])
-
-# # Calculate the mean connected time and mean charging time
-# filtered_df = df_lp[(df_lp['ChargeTime'] >= 0) & (df_lp['ConnectedTime'] >= 0)]
-# sampled_df = filtered_df.sample(n=25, random_state=42)
-# mean_connected_time = filtered_df['ConnectedTime'].mean()
-# mean_charge_time = filtered_df['ChargeTime'].mean()
-# mean_df = pd.DataFrame({'Type': ['Connected Time', 'Charge Time'],
-#                         'Mean Time': [mean_connected_time, mean_charge_time]})
-                        
-# st.write(filtered_df[['ConnectedTime', 'ChargeTime']].head())
-
-# # Create the stacked bar chart
-# fig1 = px.bar(sampled_df, x=sampled_df.index, y=['ConnectedTime', 'ChargeTime'],
-#               title='Connected Time vs Charge Time per Charging Session (Filtered)',
-#               labels={'value': 'Time (minutes)', 'variable': 'Type'},
-#               barmode='stack')
-# st.write(fig1.data)
-
-# # Create a grouped bar chart for mean values
-# fig2 = px.bar(mean_df, x='Type', y='Mean Time',
-#               title='Mean Connected Time vs Mean Charge Time',
-#               labels={'Mean Time': 'Time (minutes)'})
-
-# # Update layout and add traces
-# fig.add_trace(fig1.data[0], row=1, col=1)
-# fig.add_trace(fig2.data[0], row=1, col=2)
-# fig.update_xaxes(title='Charging Session', row=1, col=1)
-# fig.update_yaxes(title='Time (minutes)', row=1, col=1)
-# fig.update_xaxes(title='Type', row=1, col=2)
-# fig.update_yaxes(title='Time (minutes)', row=1, col=2)
-# # fig.update_layout(showlegend=False, row=1, col=2)
-# st.plotly_chart(fig)
 
 st.write('''
 ### Oplaad momenten
