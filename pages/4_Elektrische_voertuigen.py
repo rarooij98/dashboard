@@ -46,8 +46,10 @@ st.write("### Meest voorkomende auto modellen")
 # Choose a car brand
 car_brand = st.selectbox("Selecteer een automerk", top_automerken.index)
 df_rdw_filtered = df_rdw[df_rdw['Merk'] == car_brand]
+car_counts = df_rdw_filtered['Handelsbenaming'].value_counts()
+sorted_cars = car_counts.index
 st.write(f"Deze histogram laat de meest voorkomende elektrische auto's zien van het automerk '{car_brand}'.")
-fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Handelsbenaming'], labels={'x': 'Handelsbenaming'})
+fig = px.histogram(df_rdw_filtered, x=df_rdw_filtered['Handelsbenaming'], labels={'x': 'Handelsbenaming'}, category_orders={'Handelsbenaming': sorted_cars})
 fig.update_layout(xaxis_title="Handelsbenaming", yaxis_title="Aantal")
 st.plotly_chart(fig)
 
