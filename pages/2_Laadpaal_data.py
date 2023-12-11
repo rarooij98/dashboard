@@ -75,12 +75,15 @@ fig2 = px.bar(mean_df, x='Type', y='Mean Time',
               labels={'Mean Time': 'Time (minutes)'})
 
 # Update layout and add traces
+fig1.update_xaxes(type='category')
 fig.add_trace(fig1.data[0], row=1, col=1)
 fig.add_trace(fig2.data[0], row=1, col=2)
 fig.update_xaxes(title='Charging Session', row=1, col=1)
 fig.update_yaxes(title='Time (minutes)', row=1, col=1)
 fig.update_xaxes(title='Type', row=1, col=2)
 fig.update_yaxes(title='Time (minutes)', row=1, col=2)
+fig.update_layout(showlegend=True, row=1, col=1)
+fig.update_layout(showlegend=False, row=1, col=2)
 st.plotly_chart(fig)
 
 st.write('''
