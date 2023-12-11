@@ -123,32 +123,39 @@ def create_choropleth(Laadpalen):
     m = folium.Map(location=location, zoom_start=zoom, tiles='CartoDB positron')
     
     # Voeg de markers toe
-    prov_markers = MarkerCluster().add_to(m)
-    # prov_markers = None
+    if len(selected_prov) < 12:
+        prov_markers = MarkerCluster().add_to(m)
+    
+    # Definieer de markers voor het Marker Cluster
+    Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
+    cum_count = 0
+    
+    def marker_colors(status):
+        if status == True:
+            return {'color': 'green', 'icon': 'bolt', 'prefix': 'fa'}
+        elif status == False:
+            return {'color': 'red', 'icon': 'bolt', 'prefix': 'fa'}
+    
+    # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
+    if prov_markers:
+        for index, row in Laadpalen_markers.iterrows():
+            cum_count += 1  # Increment cumulative count for each location
+            status = row['StatusType.IsOperational'] if 'StatusType.IsOperational' in row else False
+            folium.Marker(
+                [row['AddressInfo.Latitude'],
+                 row['AddressInfo.Longitude']],
+                popup=row['Connection.Level.Title'],
+                icon=folium.map.Icon(
+                    color=marker_colors(status)['color'],
+                    icon_color='white',
+                    icon=marker_colors(status)['icon'],
+                    prefix=marker_colors(status)['prefix'],
+                )
+            ).add_to(prov_markers)
+    
+    # # Voeg de markers toe
     # if len(selected_prov) < 12:
     #     prov_markers = MarkerCluster().add_to(m)
-        
-    # Iterate over each row in df_count
-    for index, row in cumcount_selection.iterrows():
-        # Get lon and lat values from df_locations
-        lon = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Longitude'].values[0]
-        lat = df_laadpaal.loc[df_laadpaal['Provincie'] == row['Provincie'], 'AddressInfo.Latitude'].values[0]
-        st.write(lon, lat)
-    
-        # Marker data based on selected data column
-        if data_column == 'count':
-            marker_data = row['count']
-        elif data_column == 'cum_count':
-            marker_data = row['cum_count']
-        elif data_column == 'per_km2':
-            marker_data = row['per_km2']
-    
-        # Create a marker and add it to the Marker Cluster
-        folium.Marker(
-            [lat, lon],
-            popup=f"{row['Provincie']}: {marker_data}",
-            icon=folium.Icon(color='blue', icon='info-sign')
-        ).add_to(prov_markers)
     
     # # Definieer de markers voor het Marker Cluser
     # Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
