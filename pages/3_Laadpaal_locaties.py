@@ -88,7 +88,7 @@ elif selected_data == 'Cumulatief aantal laadpalen':
 elif selected_data == 'Laadpalen per km2':
     data_column = 'per_km2'
 
-st.write('''
+st.caption('''
 *Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel nieuwe laadpalen er in dat jaar geregistreerd zijn.
 Of selecteer 'Laadpalen per km2' om de dichtheid van laadpalen per provincie te vergelijken.
 ''')
