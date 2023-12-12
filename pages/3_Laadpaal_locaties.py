@@ -111,9 +111,10 @@ elif len(selected_prov) == 1:
     lng = centroid.x
     location = [lat, lng]
     zoom = 9
+    st.write(lat, lng)
+    st.write(location)
     st.write(prov_selection.geometry)
     st.write(centroid)
-    st.write(location)
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
