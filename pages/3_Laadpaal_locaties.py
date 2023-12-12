@@ -109,7 +109,7 @@ elif len(selected_prov) == 1:
     centroid = prov_selection.geometry.centroid
     lat = centroid.map(lambda p: p.x)
     lng = centroid.map(lambda p: p.y)
-    location = [lng, lat]
+    location = [lat, lng]
     st.write(prov_selection.geometry)
     st.write(centroid)
     st.write(location)
