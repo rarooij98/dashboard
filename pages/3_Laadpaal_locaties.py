@@ -106,9 +106,9 @@ if len(selected_prov) > 1:
     zoom = 7
 # Zoom in als er maar 1 prov is geselecteerd
 elif len(selected_prov) == 1:
-    centroid = prov_selection.geometry.centroid
-    lat = centroid.y.values[0]  # Extracting the latitude from the centroid
-    lng = centroid.x.values[0]  # Extracting the longitude from the centroid
+    centroid = prov_selection.geometry.centroid.iloc[0]  # Access the first (and only) row
+    lat = centroid.y
+    lng = centroid.x
     location = [lat, lng]
     zoom = 9
     st.write(prov_selection.geometry)
