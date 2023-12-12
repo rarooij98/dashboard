@@ -33,7 +33,6 @@ def create_cumcount(data, geodata):
     # Print unique locations in this dataframe
     data['count'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
     unique_locations = data['count'].nunique()
-    st.write(f"Number of unique locations: {unique_locations}")
 
     # Maak een dataframe cumcount_df met de count voor elk jaar per provincie
     count_df = data.groupby(['Year', 'Provincie']).agg({'count': 'nunique'}).reset_index()
@@ -49,38 +48,10 @@ def create_cumcount(data, geodata):
     count_df['per_km2'] = count_df.groupby('Provincie')['cum_count'].transform(lambda x: x / x.max())  # Normalize per maximum cum_count
     
     return count_df
-# def create_cumcount(data, geodata):
-#     # Print unique locations in this dataframe
-#     data['Unique_Location'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
-#     unique_locations = data['Unique_Location'].nunique()
-#     st.write(f"Number of unique locations: {unique_locations}")
-
-#     # Maak een dataframe combi met alle combinaties van jaar en provincie
-#     all_combinations = pd.MultiIndex.from_product([data['Year'].unique(), data['Provincie'].unique()], names=['Year', 'Provincie'])
-#     combi = pd.DataFrame(index=all_combinations).reset_index()
-#     # Maak een dataframe cumcount_df met de count voor elk jaar per provincie
-#     cumcount_df = combi.merge(data.groupby(['Year', 'Provincie']).size().reset_index(name='count'), on=['Year', 'Provincie'], how='left')
-#     cumcount_df = cumcount_df.sort_values(by=['Year', 'Provincie'], ascending=True)
-#     # Bereken de cumulatieve count
-#     cumcount_df['cum_count'] = cumcount_df['count'].cumsum()
-#     cumcount_df['cum_count'] = np.where(cumcount_df['cum_count'].isna(), 0, cumcount_df['cum_count'])
-#     for index, row in cumcount_df.iterrows():
-#         if row['cum_count'] == 0 and row['Year'] > 2011:
-#             selection = cumcount_df.loc[(cumcount_df['Provincie']==row['Provincie']) & (cumcount_df['Year']==row['Year']-1)]
-#             cumcount_df.at[index,'cum_count'] = selection['cum_count']
-#     st.write(cumcount_df)
-#     # Bereken de laadpalen per km2 (obv de cum_count)
-#     area_dict = geodata.set_index('PROVINCIENAAM')['SHAPE.AREA'].to_dict()
-#     cumcount_df['area'] = cumcount_df['Provincie'].map(area_dict)
-#     cumcount_df['area'] = cumcount_df['area'] / 10**9
-#     cumcount_df['per_km2'] = cumcount_df['cum_count'] / cumcount_df['area']
-    
-#     return cumcount_df
 cumcount_df = create_cumcount(df_laadpaal, gdf_provincies)
-st.write(cumcount_df.head())
 
 # Neem de geselecteerde waardes en filter hiermee de data op jaar en provincie
-# User input for selecting regions
+# User input for selecting regions:
 def get_selected_prov(data):
     selected_options = st.multiselect(
         "Selecteer Provincie",
@@ -130,19 +101,19 @@ cumcount_selection = cumcount_df[cumcount_df['Year'].astype(int) == selected_yea
 location = [52.1326, 5.2913]
 zoom = 7
 # Zoom uit als meer dan 1 prov is geselecteerd
-# if len(selected_prov) > 1:
-#     location = [52.1326, 5.2913]
-#     zoom = 7
+if len(selected_prov) > 1:
+    location = [52.1326, 5.2913]
+    zoom = 7
 # Zoom in als er maar 1 prov is geselecteerd
-# elif len(selected_prov) == 1:
-    # centroid = prov_selection.geometry.centroid
-    # lat = centroid.map(lambda p: p.x)
-    # lng = centroid.map(lambda p: p.y)
-    # location = [lng, lat]
-    # st.write(prov_selection.geometry)
-    # st.write(centroid)
-    # st.write(location)
-    # zoom = 9
+elif len(selected_prov) == 1:
+    centroid = prov_selection.geometry.centroid
+    lat = centroid.map(lambda p: p.x)
+    lng = centroid.map(lambda p: p.y)
+    location = [lng, lat]
+    st.write(prov_selection.geometry)
+    st.write(centroid)
+    st.write(location)
+    zoom = 9
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
@@ -183,37 +154,6 @@ def create_choropleth(Laadpalen):
                     prefix=marker_colors(status)['prefix'],
                 )
             ).add_to(prov_markers)
-    
-    # # Voeg de markers toe
-    # if len(selected_prov) < 12:
-    #     prov_markers = MarkerCluster().add_to(m)
-    
-    # # Definieer de markers voor het Marker Cluser
-    # Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
-    
-    # def marker_colors(status):
-    #     if status == True :
-    #         return {'color':'green', 'icon':'bolt', 'prefix':'fa'}
-    #     elif status == False :
-    #         return {'color':'red', 'icon':'bolt', 'prefix':'fa'}
-    #     # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
-    # if prov_markers:
-    #     for index, row in Laadpalen_markers.iterrows():
-    #         if row['StatusType.IsOperational']:
-    #             status = row['StatusType.IsOperational']
-    #         else: 
-    #             status = False
-    #         folium.Marker(
-    #             [row['AddressInfo.Latitude'], 
-    #             row['AddressInfo.Longitude']],
-    #             popup=row['Connection.Level.Title'],
-    #             icon=folium.map.Icon(
-    #                 color=marker_colors(status)['color'],
-    #                 icon_color='white',
-    #                 icon=marker_colors(status)['icon'],
-    #                 prefix=marker_colors(status)['prefix'],
-    #             )
-    #         ).add_to(prov_markers)
         
     folium.Choropleth(
         geo_data=prov_selection,
