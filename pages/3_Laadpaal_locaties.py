@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import streamlit as st
 import folium
@@ -30,7 +29,7 @@ Op deze kaart wordt de verdeling van laadpalen over Nederland in een bepaald jaa
 
 # Maak een DataFrame met het aantal laadpalen per provincie in het geselecteerde jaar
 def create_cumcount(data, geodata):
-    # Print unique locations in this dataframe
+    # Get the count of unique locations in this dataframe
     data['count'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
     unique_locations = data['count'].nunique()
 
@@ -112,11 +111,6 @@ elif len(selected_prov) == 1:
     lng = centroid.x
     location = [lat, lng]
     zoom = 9
-    st.write(prov_selection.crs)
-    st.write(lat, lng)
-    st.write(location)
-    st.write(prov_selection.geometry)
-    st.write(centroid)
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
