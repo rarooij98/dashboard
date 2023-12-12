@@ -118,7 +118,7 @@ elif selected_data == 'Laadpalen per km2':
     data_column = 'per_km2'
 
 st.write('''
-Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel er in dat jaar geregistreerd waren.
+Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel nieuwe laadpalen er in dat jaar geregistreerd zijn.
 Of selecteer 'Laadpalen per km2' om de dichtheid van laadpalen per provincie te vergelijken.
 ''')
 
@@ -154,17 +154,13 @@ def create_choropleth(Laadpalen):
         prov_markers = MarkerCluster().add_to(m)
     
     # Definieer de markers voor het Marker Cluster
-    #Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
-    #^ conditional statement - count or cumcount selected?
-    Laadpalen_markers = Laadpalen[
-        (Laadpalen['Year'].astype(int) <= selected_year) &  # Include all years before and including the selected year
-        (Laadpalen['Provincie'].isin(selected_prov))
-    ]
-    
-    Laadpalen_markers['Unique_Location'] = Laadpalen_markers[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
-    unique_locations = Laadpalen_markers['Unique_Location'].nunique()
-    st.write(f"Number of unique locations: {unique_locations}")
-
+    if data_column == 'count':
+        Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
+    elif data_column == 'cum_count':
+        Laadpalen_markers = Laadpalen[
+            (Laadpalen['Year'].astype(int) <= selected_year) &  # Include all years before and including the selected year
+            (Laadpalen['Provincie'].isin(selected_prov))
+        ]
     
     def marker_colors(status):
         if status == True:
