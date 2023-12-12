@@ -36,19 +36,19 @@ def create_cumcount(data, geodata):
     st.write(f"Number of unique locations: {unique_locations}")
 
     # Maak een dataframe cumcount_df met de count voor elk jaar per provincie
-    cumcount_df = data.groupby(['Year', 'Provincie']).agg({'Unique_Location': 'nunique'}).reset_index()
-    cumcount_df = cumcount_df.sort_values(by=['Year', 'Provincie'], ascending=True)
+    count_df = data.groupby(['Year', 'Provincie']).agg({'Unique_Location': 'nunique'}).reset_index()
+    count_df = count_df.sort_values(by=['Year', 'Provincie'], ascending=True)
 
     # Bereken de cumulatieve count binnen elke provincie
-    cumcount_df['cum_count'] = cumcount_df.groupby('Provincie')['Unique_Location'].cumsum()
+    count_df['cum_count'] = count_df.groupby('Provincie')['Unique_Location'].cumsum()
 
     # Bereken de laadpalen per km2 (obv de cum_count)
     area_dict = geodata.set_index('PROVINCIENAAM')['SHAPE.AREA'].to_dict()
-    cumcount_df['area'] = cumcount_df['Provincie'].map(area_dict)
-    cumcount_df['area'] = cumcount_df['area'] / 10**9
-    cumcount_df['per_km2'] = cumcount_df['cum_count'] / cumcount_df['area']
+    count_df['area'] = count_df['Provincie'].map(area_dict)
+    count_df['area'] = count_df['area'] / 10**9
+    count_df['per_km2'] = count_df['cum_count'] / count_df['area']
     
-    return cumcount_df
+    return count_df
 # def create_cumcount(data, geodata):
 #     # Print unique locations in this dataframe
 #     data['Unique_Location'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
@@ -77,6 +77,7 @@ def create_cumcount(data, geodata):
     
 #     return cumcount_df
 cumcount_df = create_cumcount(df_laadpaal, gdf_provincies)
+st.write(cumcount_df.head())
 
 # Neem de geselecteerde waardes en filter hiermee de data op jaar en provincie
 # User input for selecting regions
