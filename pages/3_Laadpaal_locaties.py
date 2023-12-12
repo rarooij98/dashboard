@@ -74,7 +74,7 @@ selected_year = get_selected_year()
 # User input voor het type verdeling
 def get_selected_data():
     selected_options = st.selectbox(
-    'Welke data wil je weergeven?',
+    'Welke data wil je weergeven?*',
     ('Aantal laadpalen', 'Cumulatief aantal laadpalen', 'Laadpalen per km2'))
     return selected_options
 
@@ -89,7 +89,7 @@ elif selected_data == 'Laadpalen per km2':
     data_column = 'per_km2'
 
 st.write('''
-Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel nieuwe laadpalen er in dat jaar geregistreerd zijn.
+*Selecteer 'Cumulatief aantal laadpalen' om te zien hoeveel laadpalen er op dat moment in de provincie aanwezig zijn. Met 'Aantal laadpalen' is alleen zichtbaar hoeveel nieuwe laadpalen er in dat jaar geregistreerd zijn.
 Of selecteer 'Laadpalen per km2' om de dichtheid van laadpalen per provincie te vergelijken.
 ''')
 
