@@ -107,13 +107,13 @@ if len(selected_prov) > 1:
 # Zoom in als er maar 1 prov is geselecteerd
 elif len(selected_prov) == 1:
     centroid = prov_selection.geometry.centroid
-    lat = centroid.map(lambda p: p.x)
-    lng = centroid.map(lambda p: p.y)
+    lat = centroid.y.values[0]  # Extracting the latitude from the centroid
+    lng = centroid.x.values[0]  # Extracting the longitude from the centroid
     location = [lat, lng]
+    zoom = 9
     st.write(prov_selection.geometry)
     st.write(centroid)
     st.write(location)
-    zoom = 9
 
 # Maak een choropleth Map van de Laadpalen data
 def create_choropleth(Laadpalen):
