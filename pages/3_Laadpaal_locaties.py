@@ -106,9 +106,10 @@ if len(selected_prov) > 1:
     zoom = 7
 # Zoom in als er maar 1 prov is geselecteerd
 elif len(selected_prov) == 1:
-    centroid = prov_selection.geometry.centroid.iloc[0]  # Access the first (and only) row
-    lat = centroid.y
-    lng = centroid.x
+    centroid = prov_selection.geometry.centroid.iloc[0]
+    centroid_latlon = centroid.to_crs(epsg=4326)
+    lat = centroid_latlon.y
+    lng = centroid_latlon.x
     location = [lat, lng]
     zoom = 9
     st.write(lat, lng)
