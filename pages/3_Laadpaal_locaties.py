@@ -24,7 +24,8 @@ from data.provincies import gdf_provincies
 st.title(page_title + ' ' + page_icon)
 
 st.write('''
-Op deze kaart wordt de verdeling van laadpalen over Nederland in een bepaald jaar weergeven. Verander het jaar met de slider en zie hoe de verdeling verandert.
+Op deze kaart wordt de verdeling van laadpalen over Nederland in een bepaald jaar weergeven. Verander het jaar met de slider om te zien hoe de verdeling verandert. 
+Tussen 2012 en 2014 werden er vooral in Zuid-Holland en Brabant veel nieuwe laadpalen geregistreerd, daarna kwamen er ook in Zuid-Holland een flink aantal bij.
 ''')
 
 # Maak een DataFrame met het aantal laadpalen per provincie in het geselecteerde jaar
