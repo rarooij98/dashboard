@@ -112,6 +112,7 @@ elif len(selected_prov) == 1:
     lng = centroid_latlon.x
     location = [lat, lng]
     zoom = 9
+    st.write(centroid_latlon.crs)
     st.write(lat, lng)
     st.write(location)
     st.write(prov_selection.geometry)
