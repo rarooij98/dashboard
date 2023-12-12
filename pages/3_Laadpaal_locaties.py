@@ -154,6 +154,7 @@ def create_choropleth(Laadpalen):
     
     # Definieer de markers voor het Marker Cluster
     #Laadpalen_markers = Laadpalen[(Laadpalen['Year'].astype(int) == selected_year) & (Laadpalen['Provincie'].isin(selected_prov))]
+    #^ conditional statement - count or cumcount selected?
     Laadpalen_markers = Laadpalen[
         (Laadpalen['Year'].astype(int) <= selected_year) &  # Include all years before and including the selected year
         (Laadpalen['Provincie'].isin(selected_prov))
