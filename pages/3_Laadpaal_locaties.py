@@ -30,25 +30,14 @@ Op deze kaart wordt de verdeling van laadpalen over Nederland in een bepaald jaa
 
 # Maak een DataFrame met het aantal laadpalen per provincie in het geselecteerde jaar
 def create_cumcount(data, geodata):
-    # Print unique locations in this dataframe
-    data['Unique_Location'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
-    unique_locations = data['Unique_Location'].nunique()
-    st.write(f"Number of unique locations: {unique_locations}")
 
-    # Maak een dataframe combi met alle combinaties van jaar en provincie
-    all_combinations = pd.MultiIndex.from_product([data['Year'].unique(), data['Provincie'].unique()], names=['Year', 'Provincie'])
-    combi = pd.DataFrame(index=all_combinations).reset_index()
     # Maak een dataframe cumcount_df met de count voor elk jaar per provincie
-    cumcount_df = combi.merge(data.groupby(['Year', 'Provincie']).size().reset_index(name='count'), on=['Year', 'Provincie'], how='left')
+    cumcount_df = data.groupby(['Year', 'Provincie']).agg({'Unique_Location': 'nunique'}).reset_index()
     cumcount_df = cumcount_df.sort_values(by=['Year', 'Provincie'], ascending=True)
-    # Bereken de cumulatieve count
-    cumcount_df['cum_count'] = cumcount_df['count'].cumsum()
-    cumcount_df['cum_count'] = np.where(cumcount_df['cum_count'].isna(), 0, cumcount_df['cum_count'])
-    for index, row in cumcount_df.iterrows():
-        if row['cum_count'] == 0 and row['Year'] > 2011:
-            selection = cumcount_df.loc[(cumcount_df['Provincie']==row['Provincie']) & (cumcount_df['Year']==row['Year']-1)]
-            cumcount_df.at[index,'cum_count'] = selection['cum_count']
-    st.write(cumcount_df)
+
+    # Bereken de cumulatieve count binnen elke provincie
+    cumcount_df['cum_count'] = cumcount_df.groupby('Provincie')['Unique_Location'].cumsum()
+
     # Bereken de laadpalen per km2 (obv de cum_count)
     area_dict = geodata.set_index('PROVINCIENAAM')['SHAPE.AREA'].to_dict()
     cumcount_df['area'] = cumcount_df['Provincie'].map(area_dict)
