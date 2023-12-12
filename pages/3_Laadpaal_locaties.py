@@ -30,6 +30,11 @@ Op deze kaart wordt de verdeling van laadpalen over Nederland in een bepaald jaa
 
 # Maak een DataFrame met het aantal laadpalen per provincie in het geselecteerde jaar
 def create_cumcount(data, geodata):
+    # Print unique locations in this dataframe
+    data['Unique_Location'] = data[['AddressInfo.Latitude', 'AddressInfo.Longitude']].astype(str).agg('-'.join, axis=1)
+    unique_locations = data['Unique_Location'].nunique()
+    st.write(f"Number of unique locations: {unique_locations}")
+
     # Maak een dataframe combi met alle combinaties van jaar en provincie
     all_combinations = pd.MultiIndex.from_product([data['Year'].unique(), data['Provincie'].unique()], names=['Year', 'Provincie'])
     combi = pd.DataFrame(index=all_combinations).reset_index()
