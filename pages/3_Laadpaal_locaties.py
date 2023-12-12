@@ -130,25 +130,18 @@ def create_choropleth(Laadpalen):
             (Laadpalen['Provincie'].isin(selected_prov))
         ]
     
-    def marker_colors(status):
-        if status == True:
-            return {'color': 'green', 'icon': 'bolt', 'prefix': 'fa'}
-        elif status == False:
-            return {'color': 'red', 'icon': 'bolt', 'prefix': 'fa'}
-    
     # Voor elke locatie, maak een marker en voeg deze toe aan het cluster
     if prov_markers:
         for index, row in Laadpalen_markers.iterrows():
-            status = row['StatusType.IsOperational'] if 'StatusType.IsOperational' in row else False
             folium.Marker(
                 [row['AddressInfo.Latitude'],
                  row['AddressInfo.Longitude']],
                 popup=row['Connection.Level.Title'],
                 icon=folium.map.Icon(
-                    color=marker_colors(status)['color'],
+                    color='green',
                     icon_color='white',
-                    icon=marker_colors(status)['icon'],
-                    prefix=marker_colors(status)['prefix'],
+                    icon='bolt',
+                    prefix='fa',
                 )
             ).add_to(prov_markers)
         
